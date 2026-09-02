@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 from typing import Optional
@@ -5,6 +6,8 @@ from typing import Optional
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.collection import Collection
+
+logger = logging.getLogger(__name__)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
@@ -24,7 +27,11 @@ TEST_CONFIG_COLLECTION_NAME = _env("TEST_CONFIG_COLLECTION") or "test_config"
 
 client: Optional[MongoClient]
 if MONGO_URI:
-    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
+    try:
+        client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
+    except Exception as exc:
+        logger.warning(f"MongoDB client init failed, 'db' storage will be unavailable: {exc}")
+        client = None
 else:
     client = None
 

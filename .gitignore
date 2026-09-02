@@ -57,3 +57,6 @@ utils/__pycache__/mongo.cpython-312.pyc
 __pycache__/models.cpython-312.pyc
 utils/__pycache__/history.cpython-312.pyc
 __pycache__/models.cpython-312.pyc
+
+# Agent monitor
+agents/logs/

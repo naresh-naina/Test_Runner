@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>Sentinel &mdash; LocustForge</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%20font-size%3D%2784%27%3E%3Ctext%20y%3D%27.85em%27%3E%F0%9F%9B%A1%EF%B8%8F%3C/text%3E%3C/svg%3E"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<style>
+  :root{
+    --bg:#0b0d12; --s1:#12151c; --s2:#181c26; --border:#242938;
+    --text:#e7e9ee; --muted:#8b93a7; --mono:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+    --green:#3ddc84; --red:#ff5c6c; --amber:#f5b942; --accent:#6c8cff;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.5;
+    background:
+      radial-gradient(ellipse 900px 420px at 12% -8%, rgba(108,140,255,.08), transparent 55%),
+      radial-gradient(ellipse 700px 380px at 100% 0%, rgba(245,185,66,.05), transparent 50%),
+      var(--bg);
+    min-height:100vh;
+  }
+  header{padding:1.1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .brand{display:flex;align-items:center;gap:.7rem}
+  .brand-icon{font-size:1.55rem;line-height:1;filter:drop-shadow(0 0 10px rgba(108,140,255,.4))}
+  .brand-text{display:flex;flex-direction:column;gap:.08rem}
+  h1{
+    font-size:1.08rem;margin:0;font-weight:800;letter-spacing:.01em;
+    background:linear-gradient(120deg,#f4f6ff 10%,var(--accent) 90%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .brand-sub{font-size:.6rem;color:var(--muted);letter-spacing:.07em;text-transform:uppercase}
+  .conn{display:flex;align-items:center;gap:.45rem;font-size:.72rem;color:var(--muted)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0}
+  .dot.up{background:var(--green);animation:pulse-dot 2.2s ease-out infinite}
+  @keyframes pulse-dot{
+    0%{box-shadow:0 0 0 0 rgba(61,220,132,.55)}
+    70%{box-shadow:0 0 0 7px rgba(61,220,132,0)}
+    100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}
+  }
+  .layout{display:grid;grid-template-columns:230px 1fr;gap:1.2rem;max-width:1400px;margin:0 auto;padding:1.2rem 1.4rem;align-items:start}
+  @media (max-width:980px){.layout{grid-template-columns:1fr}}
+  main{padding:0;max-width:1100px;margin:0;display:flex;flex-direction:column;gap:1rem;min-width:0}
+  .card{
+    background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;
+    display:flex;flex-direction:column;min-width:0;
+    box-shadow:0 1px 2px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.02);
+    transition:border-color .2s ease;
+  }
+  .card:hover{border-color:#2c3346}
+  .card-title{font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+  .card-title.top{color:var(--accent);font-size:.68rem}
+  .card-desc{font-size:.72rem;line-height:1.45;color:var(--muted);margin:-.35rem 0 .7rem;max-width:62ch}
+  .badge-row{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap}
+  .badge{font-size:1.05rem;font-weight:800;padding:.35rem .9rem;border-radius:8px;letter-spacing:.03em}
+  .badge.OK{background:rgba(61,220,132,.12);color:var(--green);border:1px solid rgba(61,220,132,.3)}
+  .badge.CONCERNING{background:rgba(255,92,108,.12);color:var(--red);border:1px solid rgba(255,92,108,.3)}
+  .badge.WATCHING{background:rgba(108,140,255,.12);color:var(--accent);border:1px solid rgba(108,140,255,.3)}
+  .badge.ERROR{background:rgba(245,185,66,.12);color:var(--amber);border:1px solid rgba(245,185,66,.3)}
+  .reason{color:var(--text);font-size:.82rem;flex:1;min-width:150px}
+  .meta{color:var(--muted);font-size:.66rem;margin-top:.45rem}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(95px,1fr));gap:.6rem}
+  .tile{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:.55rem .7rem}
+  .tile-label{font-size:.56rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .tile-val{font-size:1.05rem;font-weight:700;margin-top:.2rem}
+  .log{max-height:230px;overflow-y:auto;display:flex;flex-direction:column-reverse;gap:.35rem}
+  .log-row{display:flex;gap:.5rem;padding:.4rem .6rem;border-radius:6px;background:var(--s2);border:1px solid var(--border);font-size:.72rem;animation:fade-in .28s ease}
+  .log-row .st{font-weight:800;min-width:74px}
+  .log-row .st.OK{color:var(--green)}
+  .log-row .st.CONCERNING{color:var(--red)}
+  .log-row .st.ERROR{color:var(--amber)}
+  .log-row .ts{color:var(--muted);min-width:62px}
+  .log-row .trg{color:var(--muted);font-size:.66rem;margin-left:auto;white-space:nowrap}
+  .empty{color:var(--muted);font-size:.76rem;padding:.35rem}
+  .frozen-tag{display:inline-block;margin-left:.6rem;font-size:.6rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--amber);background:rgba(245,185,66,.12);border:1px solid rgba(245,185,66,.3);padding:.15rem .5rem;border-radius:5px;vertical-align:middle}
+
+  .row-2col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start}
+  @media (max-width:760px){.row-2col{grid-template-columns:1fr}}
+  .row-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;align-items:start}
+  @media (max-width:900px){.row-3col{grid-template-columns:1fr}}
+
+  .subhdr{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:.6rem 0 .4rem}
+
+  .mini-status{font-size:.58rem;font-weight:700;letter-spacing:.03em;text-transform:none;color:var(--muted);background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:.1rem .55rem;margin-left:auto}
+  .mini-status.active{color:var(--accent);border-color:rgba(108,140,255,.4);animation:breathe 1.7s ease-in-out infinite}
+  .mini-status.done{color:var(--green);border-color:rgba(61,220,132,.35)}
+  .mini-status.error{color:var(--red);border-color:rgba(255,92,108,.35)}
+  @keyframes breathe{0%,100%{opacity:1}50%{opacity:.5}}
+
+  .steps{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:.5rem}
+  .steps.tall{max-height:340px}
+  .step{border-radius:8px;background:var(--s2);border:1px solid var(--border);padding:.6rem .75rem;font-size:.74rem;animation:fade-in .28s ease}
+  @keyframes fade-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+  .step-hdr{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem}
+  .step-status{font-size:.64rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .step-status.error{color:var(--red)}
+  .step-ts{margin-left:auto;color:var(--muted);font-size:.64rem}
+  .step-body{color:var(--text)}
+  .step-body .mono-block{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.5rem .6rem;margin-top:.4rem;font-size:.68rem;white-space:pre-wrap;word-break:break-word;max-height:200px;overflow-y:auto}
+  .analysis-item{margin-top:.3rem;padding-left:.6rem;border-left:2px solid var(--border)}
+  .analysis-item b{color:var(--text)}
+  .cat-tag{display:inline-block;font-size:.56rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:.08rem .4rem;border-radius:4px;margin-right:.4rem;vertical-align:middle}
+  .cat-tag.business_logic{color:var(--green);background:rgba(61,220,132,.12)}
+  .cat-tag.system_fault{color:var(--red);background:rgba(255,92,108,.12)}
+  .cat-tag.unclear{color:var(--amber);background:rgba(245,185,66,.12)}
+  .incident-num{font-size:1rem;font-weight:800;color:var(--amber)}
+  .verify-ok{color:var(--green);font-size:.66rem}
+  .verify-bad{color:var(--red);font-size:.66rem}
+
+  footer{text-align:center;color:var(--muted);font-size:.62rem;letter-spacing:.03em;padding:1.6rem 1rem 2rem;opacity:.75}
+
+  #summary-card{border-color:#3a4470;background:linear-gradient(165deg,var(--s1),var(--s2))}
+  .summary-findings{margin-top:.5rem}
+  .summary-incident{margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--border)}
+
+  /* Agent topology (left sidebar): who calls whom, and each one's live state
+     — driven by the same idle/active/done/error vocabulary as the cards'
+     mini-status chips (setAgentStatus() updates both from one message). */
+  .topo-panel{position:sticky;top:1.1rem}
+  @media (max-width:980px){.topo-panel{position:static}}
+  .topo-desc{font-size:.68rem;line-height:1.4;color:var(--muted);margin:-.35rem 0 .8rem}
+  .topo-node{border:1px solid var(--border);background:var(--s2);border-radius:8px;padding:.5rem .6rem;transition:border-color .2s ease,box-shadow .2s ease}
+  .topo-node.hub{background:linear-gradient(165deg,var(--s2),var(--s1))}
+  .topo-node.active{border-color:rgba(108,140,255,.5);box-shadow:0 0 0 1px rgba(108,140,255,.15),0 0 14px rgba(108,140,255,.15);animation:breathe 1.7s ease-in-out infinite}
+  .topo-node.done{border-color:rgba(61,220,132,.4)}
+  .topo-node.error{border-color:rgba(255,92,108,.45)}
+  .topo-label{font-size:.72rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:.4rem}
+  .topo-label .mini-status{margin-left:auto}
+  .topo-hint{font-size:.6rem;color:var(--muted);margin-top:.15rem}
+  .topo-arrow{display:flex;align-items:center;justify-content:center;gap:.4rem;color:var(--muted);font-size:.8rem;padding:.2rem 0}
+  .topo-arrow .topo-cond{font-size:.56rem;text-transform:uppercase;letter-spacing:.03em}
+  .topo-branch{margin:.3rem 0 0 15px;padding-left:15px;border-left:2px solid var(--border);display:flex;flex-direction:column;gap:.6rem}
+  .topo-node-wrap{position:relative}
+  .topo-stub{position:absolute;left:-15px;top:50%;width:15px;height:2px;background:var(--border);transform:translateY(-50%)}
+  .topo-cond{display:block;font-size:.56rem;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin:.25rem 0 0 .1rem}
+  .topo-legend{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1rem;padding-top:.7rem;border-top:1px solid var(--border);font-size:.6rem;color:var(--muted)}
+  .topo-legend span{display:flex;align-items:center;gap:.35rem}
+  .topo-swatch{width:8px;height:8px;border-radius:50%;background:var(--border);display:inline-block}
+  .topo-swatch.active{background:var(--accent)}
+  .topo-swatch.done{background:var(--green)}
+  .topo-swatch.error{background:var(--red)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <span class="brand-icon">&#128737;&#65039;</span>
+    <div class="brand-text">
+      <h1>Sentinel</h1>
+      <span class="brand-sub">LocustForge &middot; Agentic Test Monitoring</span>
+    </div>
+  </div>
+  <div class="conn"><span class="dot" id="dot"></span><span id="connText">connecting&hellip;</span></div>
+</header>
+<div class="layout">
+<aside class="card topo-panel">
+  <div class="card-title top">&#128506;&#65039; Agent Topology</div>
+  <div class="topo-desc">Who calls whom, live.</div>
+
+  <div class="topo-node" id="topo-node-monitor">
+    <div class="topo-label">&#128225; Monitor <span class="mini-status" id="topo-status-monitor">idle</span></div>
+    <div class="topo-hint">watches every snapshot</div>
+  </div>
+
+  <div class="topo-arrow">&darr; <span class="topo-cond">flag&nbsp;/&nbsp;test&nbsp;end</span></div>
+
+  <div class="topo-node hub" id="topo-node-orchestrator">
+    <div class="topo-label">&#129504; Orchestrator <span class="mini-status" id="topo-status-orchestrator">idle</span></div>
+    <div class="topo-hint">hub &mdash; routes to each below</div>
+  </div>
+
+  <div class="topo-branch">
+    <div>
+      <div class="topo-node-wrap">
+        <span class="topo-stub"></span>
+        <div class="topo-node" id="topo-node-analysis">
+          <div class="topo-label">&#128269; Analysis <span class="mini-status" id="topo-status-analysis">idle</span></div>
+        </div>
+      </div>
+      <span class="topo-cond">on any failure</span>
+    </div>
+    <div>
+      <div class="topo-node-wrap">
+        <span class="topo-stub"></span>
+        <div class="topo-node" id="topo-node-decisioning">
+          <div class="topo-label">&#9878;&#65039; Decisioning <span class="mini-status" id="topo-status-decisioning">idle</span></div>
+        </div>
+      </div>
+      <span class="topo-cond">final mode only</span>
+    </div>
+    <div>
+      <div class="topo-node-wrap">
+        <span class="topo-stub"></span>
+        <div class="topo-node" id="topo-node-incident">
+          <div class="topo-label">&#128680; Incident <span class="mini-status" id="topo-status-incident">idle</span></div>
+        </div>
+      </div>
+      <span class="topo-cond">if escalate</span>
+    </div>
+  </div>
+
+  <div class="topo-legend">
+    <span><i class="topo-swatch"></i>idle</span>
+    <span><i class="topo-swatch active"></i>active</span>
+    <span><i class="topo-swatch done"></i>done</span>
+    <span><i class="topo-swatch error"></i>error</span>
+  </div>
+</aside>
+<main>
+  <!-- Test Summary: appears once a test's pipeline finishes; hidden until then -->
+  <div class="card" id="summary-card" style="display:none">
+    <div class="card-title top">&#128203; Test Summary</div>
+    <div id="summary-body"></div>
+  </div>
+
+  <!-- Orchestrator: routing only, top of page -->
+  <div class="card">
+    <div class="card-title top">&#129504; Orchestrator &mdash; Routing <span class="mini-status" id="status-orchestrator">idle</span></div>
+    <div class="card-desc">Routes Analysis &rarr; Decisioning &rarr; Incident in order &mdash; makes no judgment calls itself.</div>
+    <div class="steps tall" id="steps-orchestrator"><div class="empty">No activity yet.</div></div>
+  </div>
+
+  <!-- Monitor (compact) + Live Metrics, side by side -->
+  <div class="row-2col">
+    <div class="card">
+      <div class="card-title">&#128225; Agent 1 &mdash; Monitor <span class="mini-status" id="status-monitor">idle</span></div>
+      <div class="card-desc">Watches live metrics and classifies each judged moment OK or CONCERNING.</div>
+      <div class="badge-row">
+        <span class="badge WATCHING" id="badge">WATCHING</span>
+        <span class="reason" id="reason">Waiting for the first classification&hellip;</span>
+        <span class="frozen-tag" id="frozenTag" style="display:none">test ended &mdash; frozen</span>
+      </div>
+      <div class="meta" id="meta"></div>
+      <div class="subhdr">Verdict Log</div>
+      <div class="log" id="log"><div class="empty">No verdicts yet.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">&#128202; Live Metrics <span style="text-transform:none;font-weight:400">(raw, every snapshot)</span></div>
+      <div class="tiles">
+        <div class="tile"><div class="tile-label">Status</div><div class="tile-val" id="mStatus">&mdash;</div></div>
+        <div class="tile"><div class="tile-label">RPS</div><div class="tile-val" id="mRps">&mdash;</div></div>
+        <div class="tile"><div class="tile-label">Avg RT (ms)</div><div class="tile-val" id="mAvg">&mdash;</div></div>
+        <div class="tile"><div class="tile-label">P95 RT (ms)</div><div class="tile-val" id="mP95">&mdash;</div></div>
+        <div class="tile"><div class="tile-label">Requests</div><div class="tile-val" id="mReq">&mdash;</div></div>
+        <div class="tile"><div class="tile-label">Failures</div><div class="tile-val" id="mFail">&mdash;</div></div>
+        <div class="tile"><div class="tile-label">Users</div><div class="tile-val" id="mUsers">&mdash;</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analysis -> Decisioning -> Incident, the escalation pipeline in order -->
+  <div class="row-3col">
+    <div class="card">
+      <div class="card-title">&#128269; Agent 2 &mdash; Analysis <span class="mini-status" id="status-analysis">idle</span></div>
+      <div class="card-desc">Categorizes each failure as business_logic, system_fault, or unclear, with a likely root cause.</div>
+      <div class="steps" id="steps-analysis"><div class="empty">No activity yet.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">&#9878;&#65039; Agent 3 &mdash; Decisioning <span class="mini-status" id="status-decisioning">idle</span></div>
+      <div class="card-desc">The one judgment call in the pipeline: escalate or pass, based on Analysis's findings.</div>
+      <div class="steps" id="steps-decisioning"><div class="empty">No activity yet.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">&#128680; Agent 4 &mdash; Incident Submission <span class="mini-status" id="status-incident">idle</span></div>
+      <div class="card-desc">Files the incident to the downstream API when Decisioning says escalate, then verifies it.</div>
+      <div class="steps" id="steps-incident"><div class="empty">No activity yet.</div></div>
+    </div>
+  </div>
+</main>
+</div>
+<footer>&#128737;&#65039; Sentinel &middot; part of LocustForge &middot; Monitor &rarr; Orchestrator &rarr; Analysis &rarr; Decisioning &rarr; Incident</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+let logHasEntries = false;
+const stepsHasEntries = {orchestrator:false, analysis:false, decisioning:false, incident:false};
+
+function setConn(up){
+  $("dot").className = "dot" + (up ? " up" : "");
+  $("connText").textContent = up ? "connected" : "disconnected";
+}
+
+function renderSnapshot(m){
+  $("mStatus").textContent = m.status || "—";
+  $("mRps").textContent = m.rps ?? "—";
+  $("mAvg").textContent = m.avg_response_time ?? "—";
+  $("mP95").textContent = m.p95_response_time ?? "—";
+  $("mReq").textContent = m.total_requests ?? "—";
+  $("mFail").textContent = m.total_failures ?? "—";
+  $("mUsers").textContent = m.user_count ?? "—";
+}
+
+function renderVerdict(payload){
+  const v = payload.verdict || {};
+  const status = v.status || "ERROR";
+  $("badge").className = "badge " + status;
+  $("badge").textContent = status;
+  $("reason").textContent = v.reason || "(no reason given)";
+  $("frozenTag").style.display = "none";
+  const d = new Date((payload.ts || Date.now()/1000) * 1000);
+  $("meta").textContent = `${d.toLocaleTimeString()} — trigger: ${payload.trigger || "?"}`;
+
+  if(!logHasEntries){ $("log").innerHTML = ""; logHasEntries = true; }
+  const row = document.createElement("div");
+  row.className = "log-row";
+  row.innerHTML = `<span class="ts">${d.toLocaleTimeString()}</span><span class="st ${status}">${status}</span><span>${(v.reason||"").replace(/</g,"&lt;")}</span><span class="trg">${payload.trigger || ""}</span>`;
+  $("log").prepend(row);
+  // keep at most 100 rows client-side
+  while($("log").children.length > 100) $("log").removeChild($("log").lastChild);
+}
+
+function resetVerdictForNewTest(){
+  $("badge").className = "badge WATCHING";
+  $("badge").textContent = "WATCHING";
+  $("reason").textContent = "New test started — waiting for the first classification…";
+  $("frozenTag").style.display = "none";
+  $("meta").textContent = "";
+  // A previous test's summary is stale the moment a new one starts — hide it
+  // rather than let it look like it describes the run that's now underway.
+  $("summary-card").style.display = "none";
+}
+
+function freezeVerdictForEndedTest(ts){
+  const d = new Date((ts || Date.now()/1000) * 1000);
+  $("frozenTag").style.display = "inline-block";
+  const base = $("meta").textContent.split(" — ended")[0];
+  $("meta").textContent = `${base} — ended ${d.toLocaleTimeString()}`;
+}
+
+function esc(s){ return String(s ?? "").replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+
+function setAgentStatus(agent, status){
+  // Drives both the card's own mini-status chip and the topology panel's
+  // copy of the same chip/node from one message — they're just two views
+  // onto the same idle/active/done/error state, never tracked separately.
+  const stateClass = status === "active" ? "active" : status === "error" ? "error" : status === "done" ? "done" : "";
+  for(const prefix of ["status", "topo-status"]){
+    const el = $(`${prefix}-${agent}`);
+    if(el){ el.className = "mini-status " + stateClass; el.textContent = status; }
+  }
+  const node = $(`topo-node-${agent}`);
+  if(node){
+    node.classList.remove("active", "done", "error");
+    if(stateClass) node.classList.add(stateClass);
+  }
+}
+
+function renderStepBody(agent, status, detail){
+  if(status === "error"){
+    const phase = (agent === "orchestrator" && detail.final !== undefined)
+      ? (detail.final ? "Final Decision — " : "Interim Check — ") : "";
+    return `<div class="step-body">${phase}${esc(detail.error || "unknown error")}</div>`;
+  }
+  if(agent === "orchestrator"){
+    const phase = detail.final ? "Final Decision" : "Interim Check";
+    if(status === "active"){
+      const s = detail.summary || {};
+      return `<div class="step-body"><b>${phase}</b> &mdash; ${esc(detail.note || "")} (${s.total_failures ?? "?"} failed / ${s.total_requests ?? "?"} total requests across ${(s.endpoints||[]).length} endpoints)</div>`;
+    }
+    if(status === "done"){
+      // incident_filed is only meaningful in "final" mode — mid-run can never
+      // file one (submit_incident isn't even a registered tool there), so its
+      // outcome word is fixed; the real nuance lives in final_text below.
+      const outcome = detail.final
+        ? (detail.incident_filed ? "ESCALATED" : "no incident needed")
+        : "investigated";
+      return `<div class="step-body"><b>${phase}: ${outcome}</b><div class="mono-block">${esc(detail.final_text || "")}</div></div>`;
+    }
+  }
+  if(agent === "analysis"){
+    if(status === "active"){
+      return `<div class="step-body">${esc(detail.note || "")}</div>`;
+    }
+    if(status === "done"){
+      const items = (detail.result || []).map(r => {
+        const cat = r.category || "unclear";
+        return `<div class="analysis-item"><span class="cat-tag ${cat}">${esc(cat.replace(/_/g," "))}</span><b>${esc(r.api)} [${esc(r.method)}]</b> &mdash; ${esc(r.likely_cause || "")}</div>`;
+      }).join("");
+      return `<div class="step-body">${(detail.result||[]).length} failing endpoint(s) analyzed:${items}</div>`;
+    }
+  }
+  if(agent === "decisioning"){
+    if(status === "active"){
+      return `<div class="step-body">${esc(detail.note || "")}</div>`;
+    }
+    if(status === "done"){
+      const r = detail.result || {};
+      const tagClass = r.decision === "escalate" ? "system_fault" : "business_logic";
+      return `<div class="step-body"><span class="cat-tag ${tagClass}">${esc(r.decision || "?")}</span>${esc(r.reasoning || "")}</div>`;
+    }
+  }
+  if(agent === "incident"){
+    if(status === "active"){
+      return `<div class="step-body">${esc(detail.note || "")}</div>`;
+    }
+    if(status === "done"){
+      const rec = detail.record || {};
+      const verifyLine = detail.verified
+        ? `<div class="verify-ok">&#10003; verified via GET /incidents/${esc(rec.incident_number)}</div>`
+        : `<div class="verify-bad">could not verify via GET afterward</div>`;
+      return `<div class="step-body"><div class="incident-num">Incident ${esc(rec.incident_number)}</div>${verifyLine}<div class="mono-block">${esc(JSON.stringify(rec, null, 2))}</div></div>`;
+    }
+  }
+  return `<div class="step-body">${esc(JSON.stringify(detail))}</div>`;
+}
+
+function renderAgentStep(payload){
+  const agent = payload.agent, status = payload.status, detail = payload.detail || {};
+  setAgentStatus(agent, status);
+
+  // Monitor is fully represented by the Current Verdict badge + Verdict Log
+  // above — it doesn't get its own step timeline.
+  if(agent === "monitor") return;
+
+  const stepsEl = $(`steps-${agent}`);
+  if(!stepsEl) return;
+
+  if(!stepsHasEntries[agent]){ stepsEl.innerHTML = ""; stepsHasEntries[agent] = true; }
+  const d = new Date((payload.ts || Date.now()/1000) * 1000);
+  const row = document.createElement("div");
+  row.className = "step";
+  row.innerHTML = `<div class="step-hdr">
+      <span class="step-status ${status === 'error' ? 'error' : ''}">${status}</span>
+      <span class="step-ts">${d.toLocaleTimeString()}</span>
+    </div>${renderStepBody(agent, status, detail)}`;
+  stepsEl.prepend(row);
+  while(stepsEl.children.length > 40) stepsEl.removeChild(stepsEl.lastChild);
+}
+
+function renderTestSummary(summary){
+  const outcome = summary.incident_filed ? "ISSUES FOUND" : "PASSED";
+  const outcomeClass = summary.incident_filed ? "CONCERNING" : "OK";
+  const mc = summary.monitor_checks || {ok:0, concerning:0, error:0};
+
+  const findings = (summary.findings || []).map(f => {
+    const cat = f.category || "unclear";
+    return `<div class="analysis-item"><span class="cat-tag ${cat}">${esc(cat.replace(/_/g," "))}</span><b>${esc(f.api)} [${esc(f.method)}]</b> &mdash; ${esc(f.likely_cause || "")}</div>`;
+  }).join("") || `<div class="empty">No failing endpoints &mdash; every request succeeded.</div>`;
+
+  const incidentBlock = summary.incident_filed && summary.incident
+    ? `<div class="summary-incident"><div class="incident-num">Incident ${esc(summary.incident.incident_number)}</div></div>`
+    : `<div class="summary-incident" style="color:var(--muted);font-size:.74rem">No incident filed.</div>`;
+
+  $("summary-body").innerHTML = `
+    <div class="badge-row">
+      <span class="badge ${outcomeClass}">${outcome}</span>
+      <span class="reason">${esc(summary.final_text || "")}</span>
+    </div>
+    <div class="tiles" style="margin-top:.9rem">
+      <div class="tile"><div class="tile-label">Requests</div><div class="tile-val">${summary.total_requests ?? "—"}</div></div>
+      <div class="tile"><div class="tile-label">Failures</div><div class="tile-val">${summary.total_failures ?? "—"}</div></div>
+      <div class="tile"><div class="tile-label">Duration</div><div class="tile-val">${Math.round(summary.elapsed || 0)}s</div></div>
+      <div class="tile"><div class="tile-label">Users</div><div class="tile-val">${summary.user_count ?? "—"}</div></div>
+      <div class="tile"><div class="tile-label">Monitor OK</div><div class="tile-val">${mc.ok}</div></div>
+      <div class="tile"><div class="tile-label">Monitor Flags</div><div class="tile-val">${mc.concerning}</div></div>
+    </div>
+    <div class="subhdr">Issues &amp; Root Causes</div>
+    <div class="summary-findings">${findings}</div>
+    ${incidentBlock}
+  `;
+  $("summary-card").style.display = "flex";
+}
+
+function connect(){
+  const ws = new WebSocket(`ws://${location.host}/agent-ws`);
+  ws.onopen = () => setConn(true);
+  ws.onclose = () => { setConn(false); setTimeout(connect, 2000); };
+  ws.onerror = () => ws.close();
+  ws.onmessage = (evt) => {
+    const payload = JSON.parse(evt.data);
+    if(payload.type === "connection"){ setConn(!!payload.connected); }
+    else if(payload.type === "snapshot"){ renderSnapshot(payload.metrics || {}); }
+    else if(payload.type === "verdict"){ renderVerdict(payload); }
+    else if(payload.type === "test_started"){ resetVerdictForNewTest(); }
+    else if(payload.type === "test_ended"){ freezeVerdictForEndedTest(payload.ts); }
+    else if(payload.type === "agent_step"){ renderAgentStep(payload); }
+    else if(payload.type === "test_summary"){ renderTestSummary(payload.summary || {}); }
+  };
+}
+connect();
+</script>
+</body>
+</html>

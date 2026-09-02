@@ -32,6 +32,7 @@ class ApiEndpoint(BaseModel):
     headers: Optional[Dict[str, str]] = Field(default=None)
     body: Optional[Dict[str, Any]] = Field(default=None)
     weight: int = Field(default=1, ge=1, le=100, description="Relative frequency weight")
+    timeout: float = Field(default=10.0, gt=0, le=300, description="Request timeout in seconds")
     extract: Optional[List[ExtractRule]] = Field(default=None, description="Values to extract from response")
     inject: Optional[List[InjectRule]] = Field(default=None, description="Values to inject into this request")
 

@@ -1,0 +1,308 @@
+================================================================================
+                    REALISTIC APPLICATION ERROR PAYLOADS & TRACES
+================================================================================
+A compilation of 20 simulated production-grade error messages, status codes, 
+details, and stack traces covering Multipart uploads, Business logic, Security, 
+Database, Network/External APIs, and Runtime failures.
+================================================================================
+
+
+--------------------------------------------------------------------------------
+1. MULTIPART BOUNDARY PARSING INTERRUPTED (Client Disconnect)
+--------------------------------------------------------------------------------
+{
+  "status": 400,
+  "code": "MULTIPART_STREAM_TERMINATED",
+  "error": "Stream ended unexpectedly before reaching multipart boundary delimiter '--boundary_xyz_end'.",
+  "exception": "org.apache.commons.fileupload.FileUploadBase$IOFileUploadException: Processing of multipart/form-data request failed.",
+  "stackTrace": [
+    "org.apache.commons.fileupload.MultipartStream.readHeaders(MultipartStream.java:542)",
+    "org.springframework.web.multipart.support.StandardMultipartHttpServletRequest.parseRequest(StandardMultipartHttpServletRequest.java:124)",
+    "com.app.controllers.UploadController.handleUpload(UploadController.java:45)"
+  ],
+  "timestamp": "2026-08-31T15:20:11.402Z"
+}
+
+
+--------------------------------------------------------------------------------
+2. MAXIMUM CHUNK / PART SIZE EXCEEDED
+--------------------------------------------------------------------------------
+{
+  "status": 413,
+  "code": "FILE_SIZE_LIMIT_EXCEEDED",
+  "error": "Part 'attachment_2' size (28.4 MB) exceeds the configured limit of 15 MB.",
+  "exception": "org.springframework.web.multipart.MaxUploadSizeExceededException: Maximum upload size exceeded",
+  "details": {
+    "field": "attachment_2",
+    "receivedSizeBytes": 29779520,
+    "maxAllowedBytes": 15728640
+  },
+  "timestamp": "2026-08-31T15:20:14.819Z"
+}
+
+
+--------------------------------------------------------------------------------
+3. S3 / OBJECT STORE MULTIPART UPLOAD PART FAILURE
+--------------------------------------------------------------------------------
+{
+  "status": 502,
+  "code": "STORAGE_CHUNK_UPLOAD_FAILED",
+  "error": "Failed to upload part 4 for multipart upload ID 'mp-9902-xa88b-1123'. Entity too large or ETag checksum mismatch.",
+  "exception": "software.amazon.awssdk.services.s3.model.S3Exception: The XML you provided was not well-formed or did not validate against our published schema (Service: S3, Status Code: 400, Request ID: 7D2F81A990B)",
+  "traceId": "b182d490-e74c-47ea-a841-8f5539ab4e11",
+  "timestamp": "2026-08-31T15:20:19.003Z"
+}
+
+
+--------------------------------------------------------------------------------
+4. MISSING REQUIRED FORM-DATA PART
+--------------------------------------------------------------------------------
+{
+  "status": 400,
+  "code": "MISSING_MULTIPART_PART",
+  "error": "Required part 'user_document_front' is not present in the multipart request.",
+  "exception": "org.springframework.web.multipart.support.MissingServletRequestPartException: Required part 'user_document_front' is not present",
+  "timestamp": "2026-08-31T15:20:22.115Z"
+}
+
+
+--------------------------------------------------------------------------------
+5. MIME TYPE VALIDATION MISMATCH (Magic Bytes)
+--------------------------------------------------------------------------------
+{
+  "status": 415,
+  "code": "INVALID_MIME_TYPE",
+  "error": "File 'invoice_scan.pdf' contains executable header signature (application/x-dosexec) instead of declared 'application/pdf'.",
+  "exception": "com.app.security.validation.MaliciousPayloadException: Magic byte inspection failed",
+  "details": {
+    "declaredType": "application/pdf",
+    "detectedType": "application/x-dosexec",
+    "file": "invoice_scan.pdf"
+  },
+  "timestamp": "2026-08-31T15:20:25.991Z"
+}
+
+
+--------------------------------------------------------------------------------
+6. NOT ENOUGH BALANCE TO PAY (Insufficient Funds)
+--------------------------------------------------------------------------------
+{
+  "status": 422,
+  "code": "INSUFFICIENT_WALLET_BALANCE",
+  "error": "Transaction declined: Account wallet does not have enough balance to complete payment.",
+  "details": {
+    "accountId": "act_882901",
+    "requiredAmount": "149.99",
+    "availableBalance": "32.50",
+    "currency": "USD"
+  },
+  "timestamp": "2026-08-31T15:20:30.120Z"
+}
+
+
+--------------------------------------------------------------------------------
+7. NO RECORD FOUND (Entity Missing)
+--------------------------------------------------------------------------------
+{
+  "status": 404,
+  "code": "RECORD_NOT_FOUND",
+  "error": "Order record with ID 'ord_9941a80c' was not found or has been permanently archived.",
+  "exception": "javax.persistence.EntityNotFoundException: Unable to find com.app.entities.Order with id ord_9941a80c",
+  "timestamp": "2026-08-31T15:20:33.450Z"
+}
+
+
+--------------------------------------------------------------------------------
+8. NO SHIPPING / BILLING ADDRESS FOUND
+--------------------------------------------------------------------------------
+{
+  "status": 400,
+  "code": "ADDRESS_REQUIRED",
+  "error": "Cannot checkout: No valid shipping address is associated with this profile.",
+  "details": {
+    "userId": "usr_5501",
+    "missingFields": [
+      "shipping_address_id"
+    ]
+  },
+  "timestamp": "2026-08-31T15:20:36.782Z"
+}
+
+
+--------------------------------------------------------------------------------
+9. OUT OF STOCK / INVENTORY CONFLICT
+--------------------------------------------------------------------------------
+{
+  "status": 409,
+  "code": "ITEM_OUT_OF_STOCK",
+  "error": "Item SKU-9940-RED is out of stock. Requested quantity: 3, Available: 0.",
+  "details": {
+    "sku": "SKU-9940-RED",
+    "requestedQty": 3,
+    "availableQty": 0
+  },
+  "timestamp": "2026-08-31T15:20:41.229Z"
+}
+
+
+--------------------------------------------------------------------------------
+10. PROMO CODE EXPIRED / INELIGIBLE
+--------------------------------------------------------------------------------
+{
+  "status": 422,
+  "code": "PROMO_CODE_EXPIRED",
+  "error": "Promotion code 'SUMMER50' expired on 2026-08-25T00:00:00Z and is no longer valid.",
+  "timestamp": "2026-08-31T15:20:45.002Z"
+}
+
+
+--------------------------------------------------------------------------------
+11. EXPIRED JWT TOKEN
+--------------------------------------------------------------------------------
+{
+  "status": 401,
+  "code": "TOKEN_EXPIRED",
+  "error": "The provided JSON Web Token has expired. Please refresh your session.",
+  "exception": "io.jsonwebtoken.ExpiredJwtException: JWT expired at 2026-08-31T14:50:00Z. Current time: 2026-08-31T15:20:50Z",
+  "timestamp": "2026-08-31T15:20:50.114Z"
+}
+
+
+--------------------------------------------------------------------------------
+12. INSUFFICIENT ROLE PERMISSIONS (RBAC)
+--------------------------------------------------------------------------------
+{
+  "status": 403,
+  "code": "ACCESS_DENIED",
+  "error": "User does not have permission 'billing.invoices.delete' to execute this action.",
+  "exception": "org.springframework.security.access.AccessDeniedException: Access is denied",
+  "timestamp": "2026-08-31T15:20:54.671Z"
+}
+
+
+--------------------------------------------------------------------------------
+13. RATE LIMIT EXCEEDED (HTTP 429)
+--------------------------------------------------------------------------------
+{
+  "status": 429,
+  "code": "RATE_LIMIT_EXCEEDED",
+  "error": "API rate limit of 100 req/min exceeded. Please retry after 23 seconds.",
+  "details": {
+    "limit": 100,
+    "retryAfterSeconds": 23
+  },
+  "timestamp": "2026-08-31T15:20:58.331Z"
+}
+
+
+--------------------------------------------------------------------------------
+14. DATABASE OPTIMISTIC LOCK EXCEPTION (Version Mismatch)
+--------------------------------------------------------------------------------
+{
+  "status": 409,
+  "code": "OPTIMISTIC_LOCK_FAILURE",
+  "error": "Record was updated by another concurrent transaction. Please reload and retry.",
+  "exception": "javax.persistence.OptimisticLockException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect): [com.app.entities.Customer#4412, version: 3, expected: 2]",
+  "stackTrace": [
+    "org.hibernate.internal.SessionImpl.checkVersion(SessionImpl.java:2140)",
+    "org.hibernate.action.internal.EntityUpdateAction.execute(EntityUpdateAction.java:164)",
+    "com.app.services.CustomerService.updateCustomer(CustomerService.java:92)"
+  ],
+  "timestamp": "2026-08-31T15:21:02.901Z"
+}
+
+
+--------------------------------------------------------------------------------
+15. UNIQUE CONSTRAINT VIOLATION
+--------------------------------------------------------------------------------
+{
+  "status": 409,
+  "code": "DUPLICATE_KEY_VALUE",
+  "error": "Duplicate entry 'jane.doe@company.internal' for key 'users.idx_users_email_unique'.",
+  "exception": "org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "idx_users_email_unique"",
+  "timestamp": "2026-08-31T15:21:06.180Z"
+}
+
+
+--------------------------------------------------------------------------------
+16. CONNECTION POOL EXHAUSTION / TIMEOUT
+--------------------------------------------------------------------------------
+{
+  "status": 503,
+  "code": "DB_CONNECTION_TIMEOUT",
+  "error": "Timed out waiting for an available connection from pool 'HikariPool-1' after 30000ms.",
+  "exception": "java.sql.SQLTransientConnectionException: HikariPool-1 - Connection is not available, request timed out after 30005ms (active=50, idle=0, waiting=14)",
+  "stackTrace": [
+    "com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:217)",
+    "org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:82)",
+    "com.app.repositories.ReportRepository.fetchAnalytics(ReportRepository.java:31)"
+  ],
+  "timestamp": "2026-08-31T15:21:10.510Z"
+}
+
+
+--------------------------------------------------------------------------------
+17. DOWNSTREAM PAYMENT GATEWAY TIMEOUT
+--------------------------------------------------------------------------------
+{
+  "status": 504,
+  "code": "PAYMENT_GATEWAY_TIMEOUT",
+  "error": "External payment processor (Stripe) did not respond within the 10000ms timeout window.",
+  "exception": "java.net.SocketTimeoutException: Read timed out to api.stripe.com/v1/charges",
+  "stackTrace": [
+    "java.net.SocketInputStream.socketRead0(Native Method)",
+    "com.app.gateways.StripeClient.createCharge(StripeClient.java:78)"
+  ],
+  "timestamp": "2026-08-31T15:21:14.882Z"
+}
+
+
+--------------------------------------------------------------------------------
+18. THIRD-PARTY WEBHOOK DELIVERY FAILED
+--------------------------------------------------------------------------------
+{
+  "status": 502,
+  "code": "WEBHOOK_DELIVERY_FAILED",
+  "error": "Webhook endpoint 'https://client-erp.internal/hooks' returned HTTP 500 Internal Server Error.",
+  "details": {
+    "attempt": 3,
+    "maxAttempts": 3,
+    "endpoint": "https://client-erp.internal/hooks",
+    "httpStatus": 500
+  },
+  "timestamp": "2026-08-31T15:21:18.005Z"
+}
+
+
+--------------------------------------------------------------------------------
+19. JSON DESERIALIZATION / PAYLOAD CORRUPTION
+--------------------------------------------------------------------------------
+{
+  "status": 400,
+  "code": "MALFORMED_JSON_PAYLOAD",
+  "error": "Cannot deserialize value of type `java.time.LocalDate` from String "2026-31-08": Expected format yyyy-MM-dd.",
+  "exception": "com.fasterxml.jackson.databind.exc.InvalidFormatException: Cannot deserialize value of type `java.time.LocalDate` from String "2026-31-08"",
+  "stackTrace": [
+    "com.fasterxml.jackson.databind.DeserializationContext.handleWeirdStringValue(DeserializationContext.java:1012)",
+    "com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer.deserialize(LocalDateDeserializer.java:84)"
+  ],
+  "timestamp": "2026-08-31T15:21:22.418Z"
+}
+
+
+--------------------------------------------------------------------------------
+20. NULL POINTER / UNHANDLED CORE EXCEPTION
+--------------------------------------------------------------------------------
+{
+  "status": 500,
+  "code": "NULL_POINTER_DEREFERENCE",
+  "error": "An unexpected error occurred while processing the discount calculation pipeline.",
+  "exception": "java.lang.NullPointerException: Cannot invoke "com.app.model.Tier.getDiscountRate()" because "userTier" is null",
+  "stackTrace": [
+    "com.app.services.DiscountCalculator.compute(DiscountCalculator.java:112)",
+    "com.app.services.CheckoutService.processCart(CheckoutService.java:64)",
+    "com.app.controllers.CheckoutController.checkout(CheckoutController.java:38)"
+  ],
+  "traceId": "c80911fe-46a2-4a0b-93f9-71b0593b4991",
+  "timestamp": "2026-08-31T15:21:27.103Z"
+}

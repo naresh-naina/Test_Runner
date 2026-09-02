@@ -94,20 +94,31 @@ class LocustRunner:
         ]
 
         logger.info(f"Starting locust: {' '.join(cmd)}")
-        if os.name == "nt":
-            self._process = subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
-            )
-        else:
-            self._process = subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                preexec_fn=os.setsid,
-            )
+        # Redirect to files rather than PIPE: nothing in this process drains
+        # stdout/stderr, and locust logs to stderr even with --logfile set
+        # (plus a periodic stats table on stdout in headless mode). Piping
+        # without reading fills the OS pipe buffer and deadlocks the
+        # single-threaded locust process once it blocks on a write().
+        stdout_f = open(os.path.join(self._stats_dir, "locust_stdout.log"), "wb")
+        stderr_f = open(os.path.join(self._stats_dir, "locust_stderr.log"), "wb")
+        try:
+            if os.name == "nt":
+                self._process = subprocess.Popen(
+                    cmd,
+                    stdout=stdout_f,
+                    stderr=stderr_f,
+                    creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
+                )
+            else:
+                self._process = subprocess.Popen(
+                    cmd,
+                    stdout=stdout_f,
+                    stderr=stderr_f,
+                    preexec_fn=os.setsid,
+                )
+        finally:
+            stdout_f.close()
+            stderr_f.close()
 
         self._watch_task = asyncio.create_task(self._watch_process())
         self._ts_task = asyncio.create_task(self._collect_timeseries())

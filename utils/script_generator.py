@@ -83,7 +83,7 @@ def _render_task(ep: ApiEndpoint) -> str:
         params_expr = None
 
     # --- request call ---
-    call_kwargs = [f'name="{ep.name}"', "headers=_headers"]
+    call_kwargs = [f'name="{ep.name}"', "headers=_headers", f"timeout={ep.timeout}"]
     if ep.method in (HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH):
         call_kwargs.append(f"json={body_expr}" if body_expr else "json=None")
     if params_expr:
@@ -92,7 +92,12 @@ def _render_task(ep: ApiEndpoint) -> str:
     kw_str = ", ".join(call_kwargs)
     lines.append(f"        with self.client.{method}({path_expr}, {kw_str}) as resp:")
     lines.append(f"            if resp.status_code >= 400:")
-    lines.append(f"                resp.failure(f\"Got status {{resp.status_code}}\")")
+    lines.append(f"                try:")
+    lines.append(f"                    _body_preview = resp.text[:2000]")
+    lines.append(f"                except Exception:")
+    lines.append(f"                    _body_preview = ''")
+    lines.append(f"                _fail_msg = f\"Got status {{resp.status_code}}: {{_body_preview}}\" if _body_preview else f\"Got status {{resp.status_code}}\"")
+    lines.append(f"                resp.failure(_fail_msg)")
 
     # --- extract ---
     if extract:

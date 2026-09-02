@@ -289,7 +289,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 1
           <div class="fg"><label>Method</label><select id="mMethod" onchange="mPreview()"><option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option></select></div>
           <div class="fg"><label>Weight (1-100)</label><input id="mWeight" type="number" value="1" min="1" max="100"/></div>
         </div>
-        <div class="fg"><label>Path</label><input id="mPath" placeholder="/api/resource" oninput="mPreview()"/></div>
+        <div class="frow">
+          <div class="fg"><label>Path</label><input id="mPath" placeholder="/api/resource" oninput="mPreview()"/></div>
+          <div class="fg"><label>Timeout (s)</label><input id="mTimeout" type="number" value="10" min="0.1" max="300" step="0.5" oninput="mPreview()"/></div>
+        </div>
         <div class="fg"><label>Headers (JSON)</label><textarea id="mHeaders" rows="2" placeholder='{"Authorization":"Bearer ..."}'></textarea></div>
         <div class="fg"><label>Body (JSON)</label><textarea id="mBody" rows="3" placeholder='{"key":"value"}'></textarea></div>
       </div>
@@ -366,9 +369,9 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 1
 <script>
 const S={endpoints:[],editIdx:-1,running:false,ws:null,duration:30,startTime:null,progTimer:null,elapsedTimer:null,queueTabTimer:null,charts:{}};
 const DEFAULTS=[
-  {name:"List Posts",method:"GET",path:"/posts",weight:3,headers:null,body:null,extract:[],inject:[]},
-  {name:"Get Post",method:"GET",path:"/posts/1",weight:2,headers:null,body:null,extract:[],inject:[]},
-  {name:"Create Post",method:"POST",path:"/posts",weight:1,headers:null,body:{title:"test",body:"content",userId:1},extract:[],inject:[]},
+  {name:"List Posts",method:"GET",path:"/posts",weight:3,timeout:10,headers:null,body:null,extract:[],inject:[]},
+  {name:"Get Post",method:"GET",path:"/posts/1",weight:2,timeout:10,headers:null,body:null,extract:[],inject:[]},
+  {name:"Create Post",method:"POST",path:"/posts",weight:1,timeout:10,headers:null,body:{title:"test",body:"content",userId:1},extract:[],inject:[]},
 ];
 const $=id=>document.getElementById(id);
 function toast(msg,type="ok"){const el=$("toast");el.textContent=msg;el.className=`show ${type}`;setTimeout(()=>el.className="",2800)}
@@ -424,8 +427,9 @@ let _ex=[],_in=[];
 
 function openModal(idx){
   S.editIdx=idx;
-  const ep=idx>=0?S.endpoints[idx]:{name:"",method:"GET",path:"",weight:1,headers:null,body:null,extract:[],inject:[]};
+  const ep=idx>=0?S.endpoints[idx]:{name:"",method:"GET",path:"",weight:1,timeout:10,headers:null,body:null,extract:[],inject:[]};
   $("mName").value=ep.name;$("mMethod").value=ep.method;$("mWeight").value=ep.weight;$("mPath").value=ep.path;
+  $("mTimeout").value=ep.timeout||10;
   $("mHeaders").value=ep.headers?JSON.stringify(ep.headers,null,2):"";
   $("mBody").value=ep.body?JSON.stringify(ep.body,null,2):"";
   _ex=JSON.parse(JSON.stringify(ep.extract||[]));
@@ -451,6 +455,7 @@ $("mSaveBtn").addEventListener("click",()=>{
   try{const v=$("mHeaders").value.trim();headers=v?JSON.parse(v):null}catch{toast("Invalid headers JSON","err");return}
   try{const v=$("mBody").value.trim();body=v?JSON.parse(v):null}catch{toast("Invalid body JSON","err");return}
   const ep={name,path,headers,body,method:$("mMethod").value,weight:+$("mWeight").value||1,
+    timeout:+$("mTimeout").value||10,
     extract:_ex.filter(r=>r.var&&r.path),inject:_in.filter(r=>r.var&&r.into)};
   if(S.editIdx>=0)S.endpoints[S.editIdx]=ep;else S.endpoints.push(ep);
   renderEps();closeModal();toast(S.editIdx>=0?"Endpoint updated":"Endpoint added","ok");
@@ -466,7 +471,7 @@ function mPreview(){
   code+=`<span class="ck">def</span> <span class="cd">${fn}</span>(self):\n`;
   if(_in.length){code+=`    _headers = {}\n`;_in.filter(x=>x.into==="header").forEach(x=>{if(x.var)code+=`    <span class="cc"># inject ${x.var} -> ${x.key||x.var}</span>\n`})}
   code+=`    <span class="ck">with</span> self.client.<span class="cd">${m}</span>(\n`;
-  code+=`        <span class="cs">"${path}"</span>, name=<span class="cs">"${name}"</span>`;
+  code+=`        <span class="cs">"${path}"</span>, name=<span class="cs">"${name}"</span>, timeout=<span class="cd">${$("mTimeout").value||10}</span>`;
   if(_in.length)code+=`, headers=_headers`;
   const bodyVal=$("mBody").value.trim();
   if(bodyVal&&["post","put","patch"].includes(m)){try{code+=`, json=${bodyVal}`}catch{}}
@@ -516,7 +521,7 @@ function buildConfig(){
     base_url:$("baseUrl").value.trim(),users:+$("users").value,spawn_rate:+$("spawnRate").value,
     duration:+$("duration").value,think_time_min:+$("thinkMin").value,think_time_max:+$("thinkMax").value,
     history_target:$("historyTarget").value,
-    endpoints:S.endpoints.map(e=>({name:e.name,method:e.method,path:e.path,weight:e.weight,headers:e.headers,body:e.body,
+    endpoints:S.endpoints.map(e=>({name:e.name,method:e.method,path:e.path,weight:e.weight,timeout:e.timeout||10,headers:e.headers,body:e.body,
       extract:(e.extract||[]).map(r=>({var:r.var,from:r.from||"json",path:r.path})),
       inject:(e.inject||[]).map(r=>({var:r.var,into:r.into,key:r.key||undefined}))}))
   };

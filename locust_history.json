@@ -1,1 +1,1755 @@
-[]
+[
+  {
+    "run_id": "8da9562e",
+    "ts": 1788320023.9304438,
+    "label": "https://jsonplaceholder.typicode.com [Auth_Login, Auth_Refresh, GET_User +5]",
+    "config": {
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoints": [
+        {
+          "name": "Auth_Login",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/auth/login",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "username": "jane.doe@example.com",
+            "password": "P@ssw0rd123"
+          },
+          "weight": 3,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Auth_Refresh",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/auth/refresh",
+          "headers": {
+            "refreshToken": "8a3f6c1d2e9b4f7702c8e1a4d6f9b2c5e8a1d4f7b0c3e6a9d2f5b8c1e4a7d0f3"
+          },
+          "body": {
+            "Content-Type": "application/json"
+          },
+          "weight": 2,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "GET_User",
+          "method": "GET",
+          "path": "http://127.0.0.1:5006/api/users/42",
+          "headers": null,
+          "body": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "GET_Profiles",
+          "method": "PATCH",
+          "path": "http://127.0.0.1:5006/api/users/42/profile",
+          "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "body": {
+            "displayName": "Jane A. Doe",
+            "email": "jane.a.doe@example.com"
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "GET_Inventory",
+          "method": "GET",
+          "path": "http://127.0.0.1:5006/api/inventory/sku/WIDGET-100",
+          "headers": null,
+          "body": null,
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Payments_Charge",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/payments/charge",
+          "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "Idempotency-Key": "4d7f1a9c-3b5e-4c8f-91a2-6e0d3b5f8a1c"
+          },
+          "body": {
+            "orderId": "ORD-20931",
+            "amount": 102.63,
+            "currency": "USD",
+            "paymentMethodId": "pm_3f8a1c2e"
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Payments_Refund",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/payments/refund",
+          "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "body": {
+            "transactionId": "txn_7c2e9b4f1a3d5c8e",
+            "amount": 102.63,
+            "reason": "customer_request"
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Inventory_Reserve",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/inventory/reserve",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "sku": "WIDGET-100",
+            "quantity": 5,
+            "orderId": "ORD-20944"
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        }
+      ],
+      "users": 20,
+      "spawn_rate": 2.0,
+      "duration": 300,
+      "think_time_min": 0.5,
+      "think_time_max": 2.0,
+      "history_target": "local"
+    },
+    "metrics": {
+      "status": "failed",
+      "elapsed": 316.0,
+      "total_requests": 2918,
+      "total_failures": 310,
+      "rps": 9.73,
+      "avg_response_time": 664.6,
+      "p95_response_time": 2700.0,
+      "user_count": 20,
+      "stats": [
+        {
+          "name": "Auth_Login",
+          "method": "POST",
+          "num_requests": 793,
+          "num_failures": 1,
+          "avg_response_time": 366.8986703639129,
+          "min_response_time": 140.1464999653399,
+          "max_response_time": 6317.850499995984,
+          "p50": 180.0,
+          "p95": 1200.0,
+          "p99": 3900.0,
+          "rps": 2.6451629420394283,
+          "failure_rate": 0.12610340479192939
+        },
+        {
+          "name": "Auth_Refresh",
+          "method": "POST",
+          "num_requests": 514,
+          "num_failures": 302,
+          "avg_response_time": 328.00545642113474,
+          "min_response_time": 75.17070008907467,
+          "max_response_time": 5865.985000040382,
+          "p50": 110.0,
+          "p95": 1600.0,
+          "p99": 3900.0,
+          "rps": 1.7145192335539297,
+          "failure_rate": 58.754863813229576
+        },
+        {
+          "name": "GET_Inventory",
+          "method": "GET",
+          "num_requests": 275,
+          "num_failures": 0,
+          "avg_response_time": 275.67643054972655,
+          "min_response_time": 34.187400015071034,
+          "max_response_time": 5853.135999990627,
+          "p50": 68.0,
+          "p95": 1200.0,
+          "p99": 5200.0,
+          "rps": 0.9173011463566744,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "GET_Profiles",
+          "method": "PATCH",
+          "num_requests": 286,
+          "num_failures": 2,
+          "avg_response_time": 331.80566468614745,
+          "min_response_time": 95.59579996857792,
+          "max_response_time": 6085.746700060554,
+          "p50": 130.0,
+          "p95": 1000.0,
+          "p99": 5000.0,
+          "rps": 0.9539931922109414,
+          "failure_rate": 0.6993006993006993
+        },
+        {
+          "name": "GET_User",
+          "method": "GET",
+          "num_requests": 271,
+          "num_failures": 0,
+          "avg_response_time": 283.9995959345801,
+          "min_response_time": 47.8915999410674,
+          "max_response_time": 5878.371299942955,
+          "p50": 81.0,
+          "p95": 970.0,
+          "p99": 4500.0,
+          "rps": 0.90395858422785,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "Inventory_Reserve",
+          "method": "POST",
+          "num_requests": 255,
+          "num_failures": 1,
+          "avg_response_time": 1266.042578825727,
+          "min_response_time": 888.5363000445068,
+          "max_response_time": 5989.603299996816,
+          "p50": 940.0,
+          "p95": 3800.0,
+          "p99": 4900.0,
+          "rps": 0.8505883357125527,
+          "failure_rate": 0.39215686274509803
+        },
+        {
+          "name": "Payments_Charge",
+          "method": "POST",
+          "num_requests": 269,
+          "num_failures": 2,
+          "avg_response_time": 593.0708025986343,
+          "min_response_time": 110.900399973616,
+          "max_response_time": 6116.463299957104,
+          "p50": 380.0,
+          "p95": 1400.0,
+          "p99": 5900.0,
+          "rps": 0.8972873031634379,
+          "failure_rate": 0.7434944237918215
+        },
+        {
+          "name": "Payments_Refund",
+          "method": "POST",
+          "num_requests": 255,
+          "num_failures": 2,
+          "avg_response_time": 2940.573956466773,
+          "min_response_time": 127.61790002696216,
+          "max_response_time": 8374.124699970707,
+          "p50": 2500.0,
+          "p95": 5500.0,
+          "p99": 7200.0,
+          "rps": 0.8505883357125527,
+          "failure_rate": 0.7843137254901961
+        }
+      ],
+      "errors": [
+        {
+          "Method": "POST",
+          "Name": "Auth_Login",
+          "Error": "ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",
+          "Occurrences": "1"
+        },
+        {
+          "Method": "POST",
+          "Name": "Inventory_Reserve",
+          "Error": "ConnectionAbortedError(10053, 'An established connection was aborted by the software in your host machine', None, 10053, None)",
+          "Occurrences": "1"
+        },
+        {
+          "Method": "POST",
+          "Name": "Payments_Refund",
+          "Error": "ConnectionAbortedError(10053, 'An established connection was aborted by the software in your host machine', None, 10053, None)",
+          "Occurrences": "1"
+        },
+        {
+          "Method": "PATCH",
+          "Name": "GET_Profiles",
+          "Error": "ConnectionAbortedError(10053, 'An established connection was aborted by the software in your host machine', None, 10053, None)",
+          "Occurrences": "1"
+        },
+        {
+          "Method": "PATCH",
+          "Name": "GET_Profiles",
+          "Error": "ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",
+          "Occurrences": "1"
+        },
+        {
+          "Method": "POST",
+          "Name": "Payments_Refund",
+          "Error": "ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",
+          "Occurrences": "1"
+        },
+        {
+          "Method": "POST",
+          "Name": "Auth_Refresh",
+          "Error": "ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",
+          "Occurrences": "2"
+        },
+        {
+          "Method": "POST",
+          "Name": "Auth_Refresh",
+          "Error": "ConnectionAbortedError(10053, 'An established connection was aborted by the software in your host machine', None, 10053, None)",
+          "Occurrences": "3"
+        },
+        {
+          "Method": "POST",
+          "Name": "Payments_Charge",
+          "Error": "ConnectionAbortedError(10053, 'An established connection was aborted by the software in your host machine', None, 10053, None)",
+          "Occurrences": "2"
+        },
+        {
+          "Method": "POST",
+          "Name": "Auth_Refresh",
+          "Error": "HTTPError('500 Server Error: Internal Server Error for url: Auth_Refresh')",
+          "Occurrences": "297"
+        }
+      ]
+    },
+    "timeseries": [
+      {
+        "rps": 8.42,
+        "avg_rt": 176.0,
+        "p95_rt": 240.0,
+        "p99_rt": 240.0,
+        "total_req": 2,
+        "failures": 0,
+        "users": 20,
+        "t": 16.1
+      },
+      {
+        "rps": 3.63,
+        "avg_rt": 231.4,
+        "p95_rt": 920.0,
+        "p99_rt": 920.0,
+        "total_req": 10,
+        "failures": 2,
+        "users": 20,
+        "t": 18.3
+      },
+      {
+        "rps": 3.93,
+        "avg_rt": 293.9,
+        "p95_rt": 960.0,
+        "p99_rt": 960.0,
+        "total_req": 20,
+        "failures": 2,
+        "users": 20,
+        "t": 20.3
+      },
+      {
+        "rps": 5.34,
+        "avg_rt": 520.7,
+        "p95_rt": 2500.0,
+        "p99_rt": 2500.0,
+        "total_req": 38,
+        "failures": 4,
+        "users": 20,
+        "t": 22.4
+      },
+      {
+        "rps": 6.41,
+        "avg_rt": 423.7,
+        "p95_rt": 2500.0,
+        "p99_rt": 2500.0,
+        "total_req": 59,
+        "failures": 6,
+        "users": 20,
+        "t": 24.5
+      },
+      {
+        "rps": 7.02,
+        "avg_rt": 444.6,
+        "p95_rt": 2500.0,
+        "p99_rt": 2600.0,
+        "total_req": 79,
+        "failures": 7,
+        "users": 20,
+        "t": 26.6
+      },
+      {
+        "rps": 7.69,
+        "avg_rt": 426.7,
+        "p95_rt": 2500.0,
+        "p99_rt": 2500.0,
+        "total_req": 102,
+        "failures": 9,
+        "users": 20,
+        "t": 28.7
+      },
+      {
+        "rps": 8.31,
+        "avg_rt": 474.3,
+        "p95_rt": 2500.0,
+        "p99_rt": 2500.0,
+        "total_req": 128,
+        "failures": 11,
+        "users": 20,
+        "t": 30.9
+      },
+      {
+        "rps": 8.69,
+        "avg_rt": 489.6,
+        "p95_rt": 2500.0,
+        "p99_rt": 2700.0,
+        "total_req": 151,
+        "failures": 15,
+        "users": 20,
+        "t": 33.0
+      },
+      {
+        "rps": 8.49,
+        "avg_rt": 491.9,
+        "p95_rt": 2500.0,
+        "p99_rt": 2700.0,
+        "total_req": 156,
+        "failures": 15,
+        "users": 20,
+        "t": 38.8
+      },
+      {
+        "rps": 7.08,
+        "avg_rt": 1016.9,
+        "p95_rt": 6100.0,
+        "p99_rt": 7700.0,
+        "total_req": 176,
+        "failures": 21,
+        "users": 20,
+        "t": 40.9
+      },
+      {
+        "rps": 7.33,
+        "avg_rt": 967.8,
+        "p95_rt": 6000.0,
+        "p99_rt": 7700.0,
+        "total_req": 197,
+        "failures": 23,
+        "users": 20,
+        "t": 43.0
+      },
+      {
+        "rps": 7.62,
+        "avg_rt": 902.0,
+        "p95_rt": 5900.0,
+        "p99_rt": 7200.0,
+        "total_req": 222,
+        "failures": 25,
+        "users": 20,
+        "t": 45.0
+      },
+      {
+        "rps": 7.96,
+        "avg_rt": 830.7,
+        "p95_rt": 5900.0,
+        "p99_rt": 7200.0,
+        "total_req": 247,
+        "failures": 30,
+        "users": 20,
+        "t": 47.1
+      },
+      {
+        "rps": 8.26,
+        "avg_rt": 805.5,
+        "p95_rt": 5900.0,
+        "p99_rt": 7200.0,
+        "total_req": 274,
+        "failures": 32,
+        "users": 20,
+        "t": 49.1
+      },
+      {
+        "rps": 8.41,
+        "avg_rt": 771.0,
+        "p95_rt": 5900.0,
+        "p99_rt": 7200.0,
+        "total_req": 296,
+        "failures": 38,
+        "users": 20,
+        "t": 51.1
+      },
+      {
+        "rps": 8.45,
+        "avg_rt": 763.5,
+        "p95_rt": 5800.0,
+        "p99_rt": 7000.0,
+        "total_req": 315,
+        "failures": 40,
+        "users": 20,
+        "t": 53.2
+      },
+      {
+        "rps": 8.78,
+        "avg_rt": 745.7,
+        "p95_rt": 2700.0,
+        "p99_rt": 7000.0,
+        "total_req": 345,
+        "failures": 44,
+        "users": 20,
+        "t": 55.2
+      },
+      {
+        "rps": 9.0,
+        "avg_rt": 706.8,
+        "p95_rt": 2600.0,
+        "p99_rt": 7000.0,
+        "total_req": 372,
+        "failures": 46,
+        "users": 20,
+        "t": 57.2
+      },
+      {
+        "rps": 9.11,
+        "avg_rt": 685.1,
+        "p95_rt": 2600.0,
+        "p99_rt": 7000.0,
+        "total_req": 395,
+        "failures": 48,
+        "users": 20,
+        "t": 59.3
+      },
+      {
+        "rps": 9.24,
+        "avg_rt": 665.9,
+        "p95_rt": 2500.0,
+        "p99_rt": 6900.0,
+        "total_req": 417,
+        "failures": 48,
+        "users": 20,
+        "t": 61.4
+      },
+      {
+        "rps": 9.3,
+        "avg_rt": 658.3,
+        "p95_rt": 2500.0,
+        "p99_rt": 6900.0,
+        "total_req": 442,
+        "failures": 52,
+        "users": 20,
+        "t": 63.4
+      },
+      {
+        "rps": 9.34,
+        "avg_rt": 655.2,
+        "p95_rt": 2500.0,
+        "p99_rt": 6900.0,
+        "total_req": 463,
+        "failures": 56,
+        "users": 20,
+        "t": 65.4
+      },
+      {
+        "rps": 9.33,
+        "avg_rt": 667.4,
+        "p95_rt": 2500.0,
+        "p99_rt": 6900.0,
+        "total_req": 486,
+        "failures": 57,
+        "users": 20,
+        "t": 67.4
+      },
+      {
+        "rps": 9.43,
+        "avg_rt": 651.6,
+        "p95_rt": 2500.0,
+        "p99_rt": 6600.0,
+        "total_req": 509,
+        "failures": 59,
+        "users": 20,
+        "t": 69.5
+      },
+      {
+        "rps": 9.47,
+        "avg_rt": 646.0,
+        "p95_rt": 2500.0,
+        "p99_rt": 6600.0,
+        "total_req": 520,
+        "failures": 63,
+        "users": 20,
+        "t": 72.2
+      },
+      {
+        "rps": 8.96,
+        "avg_rt": 690.6,
+        "p95_rt": 2600.0,
+        "p99_rt": 6600.0,
+        "total_req": 526,
+        "failures": 63,
+        "users": 20,
+        "t": 74.2
+      },
+      {
+        "rps": 9.01,
+        "avg_rt": 694.2,
+        "p95_rt": 2600.0,
+        "p99_rt": 6600.0,
+        "total_req": 550,
+        "failures": 69,
+        "users": 20,
+        "t": 76.2
+      },
+      {
+        "rps": 9.17,
+        "avg_rt": 689.8,
+        "p95_rt": 2700.0,
+        "p99_rt": 6600.0,
+        "total_req": 578,
+        "failures": 72,
+        "users": 20,
+        "t": 78.3
+      },
+      {
+        "rps": 9.2,
+        "avg_rt": 679.3,
+        "p95_rt": 2700.0,
+        "p99_rt": 6600.0,
+        "total_req": 599,
+        "failures": 76,
+        "users": 20,
+        "t": 80.4
+      },
+      {
+        "rps": 9.29,
+        "avg_rt": 667.0,
+        "p95_rt": 2600.0,
+        "p99_rt": 6300.0,
+        "total_req": 624,
+        "failures": 80,
+        "users": 20,
+        "t": 82.4
+      },
+      {
+        "rps": 9.31,
+        "avg_rt": 662.3,
+        "p95_rt": 2500.0,
+        "p99_rt": 6300.0,
+        "total_req": 644,
+        "failures": 80,
+        "users": 20,
+        "t": 84.4
+      },
+      {
+        "rps": 9.45,
+        "avg_rt": 655.4,
+        "p95_rt": 2600.0,
+        "p99_rt": 6300.0,
+        "total_req": 674,
+        "failures": 84,
+        "users": 20,
+        "t": 86.4
+      },
+      {
+        "rps": 9.46,
+        "avg_rt": 643.4,
+        "p95_rt": 2500.0,
+        "p99_rt": 6300.0,
+        "total_req": 694,
+        "failures": 85,
+        "users": 20,
+        "t": 88.5
+      },
+      {
+        "rps": 9.48,
+        "avg_rt": 644.5,
+        "p95_rt": 2600.0,
+        "p99_rt": 6100.0,
+        "total_req": 715,
+        "failures": 86,
+        "users": 20,
+        "t": 90.5
+      },
+      {
+        "rps": 9.48,
+        "avg_rt": 644.5,
+        "p95_rt": 2600.0,
+        "p99_rt": 6100.0,
+        "total_req": 715,
+        "failures": 86,
+        "users": 20,
+        "t": 92.5
+      },
+      {
+        "rps": 9.22,
+        "avg_rt": 654.5,
+        "p95_rt": 2600.0,
+        "p99_rt": 6100.0,
+        "total_req": 726,
+        "failures": 87,
+        "users": 20,
+        "t": 94.5
+      },
+      {
+        "rps": 9.14,
+        "avg_rt": 666.3,
+        "p95_rt": 2600.0,
+        "p99_rt": 6100.0,
+        "total_req": 728,
+        "failures": 87,
+        "users": 20,
+        "t": 98.6
+      },
+      {
+        "rps": 8.9,
+        "avg_rt": 762.7,
+        "p95_rt": 4000.0,
+        "p99_rt": 6100.0,
+        "total_req": 752,
+        "failures": 89,
+        "users": 20,
+        "t": 100.6
+      },
+      {
+        "rps": 8.97,
+        "avg_rt": 747.9,
+        "p95_rt": 3900.0,
+        "p99_rt": 6100.0,
+        "total_req": 778,
+        "failures": 94,
+        "users": 20,
+        "t": 102.6
+      },
+      {
+        "rps": 9.03,
+        "avg_rt": 740.2,
+        "p95_rt": 3900.0,
+        "p99_rt": 6100.0,
+        "total_req": 802,
+        "failures": 95,
+        "users": 20,
+        "t": 104.7
+      },
+      {
+        "rps": 9.07,
+        "avg_rt": 729.6,
+        "p95_rt": 3900.0,
+        "p99_rt": 6100.0,
+        "total_req": 824,
+        "failures": 97,
+        "users": 20,
+        "t": 108.0
+      },
+      {
+        "rps": 9.0,
+        "avg_rt": 745.7,
+        "p95_rt": 3900.0,
+        "p99_rt": 6100.0,
+        "total_req": 848,
+        "failures": 98,
+        "users": 20,
+        "t": 110.0
+      },
+      {
+        "rps": 9.01,
+        "avg_rt": 744.5,
+        "p95_rt": 3800.0,
+        "p99_rt": 6100.0,
+        "total_req": 868,
+        "failures": 101,
+        "users": 20,
+        "t": 112.0
+      },
+      {
+        "rps": 9.05,
+        "avg_rt": 733.6,
+        "p95_rt": 3800.0,
+        "p99_rt": 6100.0,
+        "total_req": 891,
+        "failures": 105,
+        "users": 20,
+        "t": 114.1
+      },
+      {
+        "rps": 9.12,
+        "avg_rt": 726.2,
+        "p95_rt": 3700.0,
+        "p99_rt": 6100.0,
+        "total_req": 916,
+        "failures": 109,
+        "users": 20,
+        "t": 116.2
+      },
+      {
+        "rps": 9.17,
+        "avg_rt": 714.4,
+        "p95_rt": 3500.0,
+        "p99_rt": 6100.0,
+        "total_req": 941,
+        "failures": 114,
+        "users": 20,
+        "t": 118.2
+      },
+      {
+        "rps": 9.22,
+        "avg_rt": 710.1,
+        "p95_rt": 3500.0,
+        "p99_rt": 6100.0,
+        "total_req": 952,
+        "failures": 116,
+        "users": 20,
+        "t": 120.3
+      },
+      {
+        "rps": 9.12,
+        "avg_rt": 721.7,
+        "p95_rt": 3500.0,
+        "p99_rt": 6100.0,
+        "total_req": 970,
+        "failures": 117,
+        "users": 20,
+        "t": 122.3
+      },
+      {
+        "rps": 9.14,
+        "avg_rt": 711.6,
+        "p95_rt": 3400.0,
+        "p99_rt": 6100.0,
+        "total_req": 991,
+        "failures": 121,
+        "users": 20,
+        "t": 124.4
+      },
+      {
+        "rps": 9.09,
+        "avg_rt": 711.8,
+        "p95_rt": 3300.0,
+        "p99_rt": 6000.0,
+        "total_req": 1011,
+        "failures": 121,
+        "users": 20,
+        "t": 126.6
+      },
+      {
+        "rps": 9.11,
+        "avg_rt": 722.8,
+        "p95_rt": 3200.0,
+        "p99_rt": 6000.0,
+        "total_req": 1030,
+        "failures": 121,
+        "users": 20,
+        "t": 128.6
+      },
+      {
+        "rps": 9.14,
+        "avg_rt": 720.6,
+        "p95_rt": 3200.0,
+        "p99_rt": 6000.0,
+        "total_req": 1048,
+        "failures": 122,
+        "users": 20,
+        "t": 130.7
+      },
+      {
+        "rps": 9.22,
+        "avg_rt": 715.6,
+        "p95_rt": 3200.0,
+        "p99_rt": 6000.0,
+        "total_req": 1083,
+        "failures": 125,
+        "users": 20,
+        "t": 132.7
+      },
+      {
+        "rps": 9.26,
+        "avg_rt": 712.7,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1106,
+        "failures": 128,
+        "users": 20,
+        "t": 134.8
+      },
+      {
+        "rps": 9.27,
+        "avg_rt": 707.6,
+        "p95_rt": 3100.0,
+        "p99_rt": 5900.0,
+        "total_req": 1127,
+        "failures": 131,
+        "users": 20,
+        "t": 136.9
+      },
+      {
+        "rps": 9.25,
+        "avg_rt": 709.5,
+        "p95_rt": 3100.0,
+        "p99_rt": 5900.0,
+        "total_req": 1132,
+        "failures": 131,
+        "users": 20,
+        "t": 138.9
+      },
+      {
+        "rps": 9.17,
+        "avg_rt": 717.0,
+        "p95_rt": 3100.0,
+        "p99_rt": 5900.0,
+        "total_req": 1144,
+        "failures": 132,
+        "users": 20,
+        "t": 141.0
+      },
+      {
+        "rps": 9.18,
+        "avg_rt": 730.2,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1173,
+        "failures": 134,
+        "users": 20,
+        "t": 143.0
+      },
+      {
+        "rps": 9.24,
+        "avg_rt": 723.0,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1199,
+        "failures": 137,
+        "users": 20,
+        "t": 145.0
+      },
+      {
+        "rps": 9.28,
+        "avg_rt": 715.9,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1223,
+        "failures": 138,
+        "users": 20,
+        "t": 147.1
+      },
+      {
+        "rps": 9.31,
+        "avg_rt": 711.0,
+        "p95_rt": 3100.0,
+        "p99_rt": 5900.0,
+        "total_req": 1246,
+        "failures": 140,
+        "users": 20,
+        "t": 149.1
+      },
+      {
+        "rps": 9.31,
+        "avg_rt": 711.0,
+        "p95_rt": 3100.0,
+        "p99_rt": 5900.0,
+        "total_req": 1246,
+        "failures": 140,
+        "users": 20,
+        "t": 151.1
+      },
+      {
+        "rps": 9.17,
+        "avg_rt": 727.2,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1260,
+        "failures": 141,
+        "users": 20,
+        "t": 153.1
+      },
+      {
+        "rps": 9.22,
+        "avg_rt": 729.8,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1270,
+        "failures": 141,
+        "users": 20,
+        "t": 155.1
+      },
+      {
+        "rps": 9.18,
+        "avg_rt": 733.2,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1295,
+        "failures": 142,
+        "users": 20,
+        "t": 157.1
+      },
+      {
+        "rps": 9.25,
+        "avg_rt": 720.5,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1324,
+        "failures": 147,
+        "users": 20,
+        "t": 159.1
+      },
+      {
+        "rps": 9.27,
+        "avg_rt": 716.0,
+        "p95_rt": 3100.0,
+        "p99_rt": 5900.0,
+        "total_req": 1347,
+        "failures": 152,
+        "users": 20,
+        "t": 161.2
+      },
+      {
+        "rps": 9.32,
+        "avg_rt": 713.1,
+        "p95_rt": 3100.0,
+        "p99_rt": 5900.0,
+        "total_req": 1373,
+        "failures": 155,
+        "users": 20,
+        "t": 163.2
+      },
+      {
+        "rps": 9.32,
+        "avg_rt": 710.8,
+        "p95_rt": 3100.0,
+        "p99_rt": 5900.0,
+        "total_req": 1383,
+        "failures": 156,
+        "users": 20,
+        "t": 166.3
+      },
+      {
+        "rps": 9.12,
+        "avg_rt": 730.8,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1393,
+        "failures": 161,
+        "users": 20,
+        "t": 168.4
+      },
+      {
+        "rps": 9.14,
+        "avg_rt": 722.9,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1415,
+        "failures": 167,
+        "users": 20,
+        "t": 170.4
+      },
+      {
+        "rps": 9.17,
+        "avg_rt": 720.5,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1438,
+        "failures": 170,
+        "users": 20,
+        "t": 172.5
+      },
+      {
+        "rps": 9.21,
+        "avg_rt": 718.1,
+        "p95_rt": 3200.0,
+        "p99_rt": 5900.0,
+        "total_req": 1463,
+        "failures": 172,
+        "users": 20,
+        "t": 174.5
+      },
+      {
+        "rps": 9.25,
+        "avg_rt": 710.1,
+        "p95_rt": 3100.0,
+        "p99_rt": 5900.0,
+        "total_req": 1489,
+        "failures": 173,
+        "users": 20,
+        "t": 176.6
+      },
+      {
+        "rps": 9.27,
+        "avg_rt": 704.6,
+        "p95_rt": 3100.0,
+        "p99_rt": 5900.0,
+        "total_req": 1512,
+        "failures": 174,
+        "users": 20,
+        "t": 178.7
+      },
+      {
+        "rps": 9.31,
+        "avg_rt": 701.7,
+        "p95_rt": 3100.0,
+        "p99_rt": 5900.0,
+        "total_req": 1536,
+        "failures": 177,
+        "users": 20,
+        "t": 180.7
+      },
+      {
+        "rps": 9.35,
+        "avg_rt": 696.2,
+        "p95_rt": 3000.0,
+        "p99_rt": 5900.0,
+        "total_req": 1562,
+        "failures": 181,
+        "users": 20,
+        "t": 182.8
+      },
+      {
+        "rps": 9.38,
+        "avg_rt": 689.7,
+        "p95_rt": 3000.0,
+        "p99_rt": 5900.0,
+        "total_req": 1586,
+        "failures": 182,
+        "users": 20,
+        "t": 184.8
+      },
+      {
+        "rps": 9.43,
+        "avg_rt": 686.8,
+        "p95_rt": 3000.0,
+        "p99_rt": 5800.0,
+        "total_req": 1614,
+        "failures": 184,
+        "users": 20,
+        "t": 186.9
+      },
+      {
+        "rps": 9.44,
+        "avg_rt": 681.0,
+        "p95_rt": 2900.0,
+        "p99_rt": 5800.0,
+        "total_req": 1636,
+        "failures": 187,
+        "users": 20,
+        "t": 188.9
+      },
+      {
+        "rps": 9.5,
+        "avg_rt": 676.8,
+        "p95_rt": 2900.0,
+        "p99_rt": 5800.0,
+        "total_req": 1664,
+        "failures": 189,
+        "users": 20,
+        "t": 190.9
+      },
+      {
+        "rps": 9.52,
+        "avg_rt": 669.2,
+        "p95_rt": 2800.0,
+        "p99_rt": 5800.0,
+        "total_req": 1689,
+        "failures": 190,
+        "users": 20,
+        "t": 193.0
+      },
+      {
+        "rps": 9.54,
+        "avg_rt": 666.2,
+        "p95_rt": 2800.0,
+        "p99_rt": 5500.0,
+        "total_req": 1709,
+        "failures": 192,
+        "users": 20,
+        "t": 195.0
+      },
+      {
+        "rps": 9.55,
+        "avg_rt": 664.3,
+        "p95_rt": 2800.0,
+        "p99_rt": 5500.0,
+        "total_req": 1734,
+        "failures": 193,
+        "users": 20,
+        "t": 197.0
+      },
+      {
+        "rps": 9.55,
+        "avg_rt": 664.4,
+        "p95_rt": 2800.0,
+        "p99_rt": 5500.0,
+        "total_req": 1756,
+        "failures": 197,
+        "users": 20,
+        "t": 199.2
+      },
+      {
+        "rps": 9.53,
+        "avg_rt": 667.1,
+        "p95_rt": 2800.0,
+        "p99_rt": 5500.0,
+        "total_req": 1762,
+        "failures": 197,
+        "users": 20,
+        "t": 201.4
+      },
+      {
+        "rps": 9.55,
+        "avg_rt": 669.2,
+        "p95_rt": 2800.0,
+        "p99_rt": 5500.0,
+        "total_req": 1793,
+        "failures": 201,
+        "users": 20,
+        "t": 203.4
+      },
+      {
+        "rps": 9.55,
+        "avg_rt": 667.8,
+        "p95_rt": 2800.0,
+        "p99_rt": 5500.0,
+        "total_req": 1814,
+        "failures": 203,
+        "users": 20,
+        "t": 205.4
+      },
+      {
+        "rps": 9.58,
+        "avg_rt": 666.3,
+        "p95_rt": 2800.0,
+        "p99_rt": 5500.0,
+        "total_req": 1839,
+        "failures": 205,
+        "users": 20,
+        "t": 207.5
+      },
+      {
+        "rps": 9.63,
+        "avg_rt": 659.6,
+        "p95_rt": 2700.0,
+        "p99_rt": 5500.0,
+        "total_req": 1868,
+        "failures": 209,
+        "users": 20,
+        "t": 209.5
+      },
+      {
+        "rps": 9.65,
+        "avg_rt": 655.7,
+        "p95_rt": 2700.0,
+        "p99_rt": 5500.0,
+        "total_req": 1891,
+        "failures": 214,
+        "users": 20,
+        "t": 211.6
+      },
+      {
+        "rps": 9.65,
+        "avg_rt": 656.2,
+        "p95_rt": 2700.0,
+        "p99_rt": 5100.0,
+        "total_req": 1910,
+        "failures": 215,
+        "users": 20,
+        "t": 213.7
+      },
+      {
+        "rps": 9.68,
+        "avg_rt": 653.6,
+        "p95_rt": 2700.0,
+        "p99_rt": 5100.0,
+        "total_req": 1936,
+        "failures": 220,
+        "users": 20,
+        "t": 215.7
+      },
+      {
+        "rps": 9.68,
+        "avg_rt": 652.3,
+        "p95_rt": 2700.0,
+        "p99_rt": 5100.0,
+        "total_req": 1956,
+        "failures": 222,
+        "users": 20,
+        "t": 217.8
+      },
+      {
+        "rps": 9.69,
+        "avg_rt": 650.7,
+        "p95_rt": 2700.0,
+        "p99_rt": 5100.0,
+        "total_req": 1978,
+        "failures": 227,
+        "users": 20,
+        "t": 219.8
+      },
+      {
+        "rps": 9.72,
+        "avg_rt": 649.5,
+        "p95_rt": 2600.0,
+        "p99_rt": 5100.0,
+        "total_req": 2003,
+        "failures": 227,
+        "users": 20,
+        "t": 221.8
+      },
+      {
+        "rps": 9.73,
+        "avg_rt": 647.9,
+        "p95_rt": 2600.0,
+        "p99_rt": 5100.0,
+        "total_req": 2023,
+        "failures": 228,
+        "users": 20,
+        "t": 223.8
+      },
+      {
+        "rps": 9.75,
+        "avg_rt": 645.0,
+        "p95_rt": 2600.0,
+        "p99_rt": 5100.0,
+        "total_req": 2050,
+        "failures": 230,
+        "users": 20,
+        "t": 225.9
+      },
+      {
+        "rps": 9.79,
+        "avg_rt": 639.5,
+        "p95_rt": 2600.0,
+        "p99_rt": 5100.0,
+        "total_req": 2077,
+        "failures": 232,
+        "users": 20,
+        "t": 227.9
+      },
+      {
+        "rps": 9.81,
+        "avg_rt": 634.7,
+        "p95_rt": 2600.0,
+        "p99_rt": 5100.0,
+        "total_req": 2101,
+        "failures": 233,
+        "users": 20,
+        "t": 230.0
+      },
+      {
+        "rps": 9.83,
+        "avg_rt": 632.3,
+        "p95_rt": 2600.0,
+        "p99_rt": 5100.0,
+        "total_req": 2127,
+        "failures": 233,
+        "users": 20,
+        "t": 232.0
+      },
+      {
+        "rps": 9.83,
+        "avg_rt": 631.6,
+        "p95_rt": 2600.0,
+        "p99_rt": 5100.0,
+        "total_req": 2146,
+        "failures": 234,
+        "users": 20,
+        "t": 234.0
+      },
+      {
+        "rps": 9.83,
+        "avg_rt": 630.5,
+        "p95_rt": 2600.0,
+        "p99_rt": 5100.0,
+        "total_req": 2170,
+        "failures": 236,
+        "users": 20,
+        "t": 236.1
+      },
+      {
+        "rps": 9.86,
+        "avg_rt": 629.9,
+        "p95_rt": 2600.0,
+        "p99_rt": 5100.0,
+        "total_req": 2196,
+        "failures": 236,
+        "users": 20,
+        "t": 238.1
+      },
+      {
+        "rps": 9.86,
+        "avg_rt": 629.7,
+        "p95_rt": 2600.0,
+        "p99_rt": 5000.0,
+        "total_req": 2220,
+        "failures": 239,
+        "users": 20,
+        "t": 240.1
+      },
+      {
+        "rps": 9.89,
+        "avg_rt": 627.2,
+        "p95_rt": 2600.0,
+        "p99_rt": 5000.0,
+        "total_req": 2246,
+        "failures": 242,
+        "users": 20,
+        "t": 242.2
+      },
+      {
+        "rps": 9.88,
+        "avg_rt": 625.2,
+        "p95_rt": 2600.0,
+        "p99_rt": 5000.0,
+        "total_req": 2255,
+        "failures": 244,
+        "users": 20,
+        "t": 244.2
+      },
+      {
+        "rps": 9.9,
+        "avg_rt": 623.4,
+        "p95_rt": 2600.0,
+        "p99_rt": 5000.0,
+        "total_req": 2279,
+        "failures": 247,
+        "users": 20,
+        "t": 246.3
+      },
+      {
+        "rps": 9.9,
+        "avg_rt": 622.6,
+        "p95_rt": 2600.0,
+        "p99_rt": 5000.0,
+        "total_req": 2301,
+        "failures": 249,
+        "users": 20,
+        "t": 248.3
+      },
+      {
+        "rps": 9.92,
+        "avg_rt": 622.7,
+        "p95_rt": 2600.0,
+        "p99_rt": 5000.0,
+        "total_req": 2328,
+        "failures": 255,
+        "users": 20,
+        "t": 250.4
+      },
+      {
+        "rps": 9.91,
+        "avg_rt": 620.1,
+        "p95_rt": 2600.0,
+        "p99_rt": 5000.0,
+        "total_req": 2346,
+        "failures": 258,
+        "users": 20,
+        "t": 252.4
+      },
+      {
+        "rps": 9.92,
+        "avg_rt": 622.7,
+        "p95_rt": 2600.0,
+        "p99_rt": 5000.0,
+        "total_req": 2368,
+        "failures": 260,
+        "users": 20,
+        "t": 254.4
+      },
+      {
+        "rps": 9.93,
+        "avg_rt": 621.9,
+        "p95_rt": 2600.0,
+        "p99_rt": 5000.0,
+        "total_req": 2393,
+        "failures": 266,
+        "users": 20,
+        "t": 256.5
+      },
+      {
+        "rps": 9.95,
+        "avg_rt": 619.0,
+        "p95_rt": 2600.0,
+        "p99_rt": 4900.0,
+        "total_req": 2419,
+        "failures": 270,
+        "users": 20,
+        "t": 258.5
+      },
+      {
+        "rps": 9.97,
+        "avg_rt": 617.1,
+        "p95_rt": 2600.0,
+        "p99_rt": 4900.0,
+        "total_req": 2445,
+        "failures": 271,
+        "users": 20,
+        "t": 260.6
+      },
+      {
+        "rps": 9.99,
+        "avg_rt": 615.5,
+        "p95_rt": 2600.0,
+        "p99_rt": 4900.0,
+        "total_req": 2470,
+        "failures": 273,
+        "users": 20,
+        "t": 262.6
+      },
+      {
+        "rps": 9.97,
+        "avg_rt": 616.3,
+        "p95_rt": 2600.0,
+        "p99_rt": 4900.0,
+        "total_req": 2489,
+        "failures": 274,
+        "users": 20,
+        "t": 264.7
+      },
+      {
+        "rps": 9.98,
+        "avg_rt": 617.2,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2512,
+        "failures": 275,
+        "users": 20,
+        "t": 266.7
+      },
+      {
+        "rps": 10.0,
+        "avg_rt": 617.3,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2524,
+        "failures": 277,
+        "users": 20,
+        "t": 268.7
+      },
+      {
+        "rps": 10.01,
+        "avg_rt": 613.4,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2549,
+        "failures": 280,
+        "users": 20,
+        "t": 270.7
+      },
+      {
+        "rps": 10.01,
+        "avg_rt": 614.2,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2574,
+        "failures": 281,
+        "users": 20,
+        "t": 272.8
+      },
+      {
+        "rps": 10.01,
+        "avg_rt": 612.7,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2595,
+        "failures": 282,
+        "users": 20,
+        "t": 274.9
+      },
+      {
+        "rps": 10.02,
+        "avg_rt": 613.5,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2617,
+        "failures": 284,
+        "users": 20,
+        "t": 276.9
+      },
+      {
+        "rps": 10.03,
+        "avg_rt": 611.0,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2642,
+        "failures": 285,
+        "users": 20,
+        "t": 278.9
+      },
+      {
+        "rps": 10.04,
+        "avg_rt": 610.6,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2666,
+        "failures": 288,
+        "users": 20,
+        "t": 281.0
+      },
+      {
+        "rps": 10.04,
+        "avg_rt": 609.0,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2690,
+        "failures": 291,
+        "users": 20,
+        "t": 283.0
+      },
+      {
+        "rps": 10.05,
+        "avg_rt": 607.8,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2713,
+        "failures": 291,
+        "users": 20,
+        "t": 285.1
+      },
+      {
+        "rps": 10.07,
+        "avg_rt": 607.0,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2728,
+        "failures": 291,
+        "users": 20,
+        "t": 287.5
+      },
+      {
+        "rps": 10.0,
+        "avg_rt": 610.2,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2735,
+        "failures": 293,
+        "users": 20,
+        "t": 289.6
+      },
+      {
+        "rps": 9.92,
+        "avg_rt": 616.3,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2741,
+        "failures": 294,
+        "users": 20,
+        "t": 291.6
+      },
+      {
+        "rps": 9.92,
+        "avg_rt": 628.5,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2752,
+        "failures": 295,
+        "users": 20,
+        "t": 295.3
+      },
+      {
+        "rps": 9.85,
+        "avg_rt": 636.7,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2767,
+        "failures": 295,
+        "users": 20,
+        "t": 297.6
+      },
+      {
+        "rps": 9.83,
+        "avg_rt": 638.8,
+        "p95_rt": 2600.0,
+        "p99_rt": 4800.0,
+        "total_req": 2771,
+        "failures": 295,
+        "users": 20,
+        "t": 299.7
+      },
+      {
+        "rps": 9.7,
+        "avg_rt": 646.5,
+        "p95_rt": 2600.0,
+        "p99_rt": 4900.0,
+        "total_req": 2779,
+        "failures": 295,
+        "users": 20,
+        "t": 301.8
+      },
+      {
+        "rps": 9.7,
+        "avg_rt": 661.9,
+        "p95_rt": 2700.0,
+        "p99_rt": 5100.0,
+        "total_req": 2800,
+        "failures": 298,
+        "users": 20,
+        "t": 303.8
+      },
+      {
+        "rps": 9.71,
+        "avg_rt": 665.6,
+        "p95_rt": 2700.0,
+        "p99_rt": 5100.0,
+        "total_req": 2819,
+        "failures": 299,
+        "users": 20,
+        "t": 305.8
+      },
+      {
+        "rps": 9.71,
+        "avg_rt": 667.1,
+        "p95_rt": 2700.0,
+        "p99_rt": 5100.0,
+        "total_req": 2843,
+        "failures": 300,
+        "users": 20,
+        "t": 307.9
+      },
+      {
+        "rps": 9.71,
+        "avg_rt": 665.5,
+        "p95_rt": 2700.0,
+        "p99_rt": 5100.0,
+        "total_req": 2864,
+        "failures": 304,
+        "users": 20,
+        "t": 309.9
+      },
+      {
+        "rps": 9.74,
+        "avg_rt": 664.2,
+        "p95_rt": 2700.0,
+        "p99_rt": 5100.0,
+        "total_req": 2881,
+        "failures": 307,
+        "users": 20,
+        "t": 311.9
+      },
+      {
+        "rps": 9.75,
+        "avg_rt": 661.2,
+        "p95_rt": 2700.0,
+        "p99_rt": 5100.0,
+        "total_req": 2905,
+        "failures": 309,
+        "users": 20,
+        "t": 313.9
+      },
+      {
+        "rps": 9.73,
+        "avg_rt": 664.6,
+        "p95_rt": 2700.0,
+        "p99_rt": 5100.0,
+        "total_req": 2918,
+        "failures": 310,
+        "users": 20,
+        "t": 315.7
+      }
+    ],
+    "script": "# Auto-generated Locust script\n# Generated by LocustForge API Testing Tool\n\nfrom locust import HttpUser, task, between\nimport json\n\n\nclass LoadTestUser(HttpUser):\n    host = \"https://jsonplaceholder.typicode.com\"\n    wait_time = between(0.5, 2.0)\n\n    @task(3)\n    def auth_login(self):\n        _headers = {\"Content-Type\": \"application/json\"}\n        _body = {\"username\": \"jane.doe@example.com\", \"password\": \"P@ssw0rd123\"}\n        with self.client.post(\"http://127.0.0.1:5006/api/auth/login\", name=\"Auth_Login\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(2)\n    def auth_refresh(self):\n        _headers = {\"refreshToken\": \"8a3f6c1d2e9b4f7702c8e1a4d6f9b2c5e8a1d4f7b0c3e6a9d2f5b8c1e4a7d0f3\"}\n        _body = {\"Content-Type\": \"application/json\"}\n        with self.client.post(\"http://127.0.0.1:5006/api/auth/refresh\", name=\"Auth_Refresh\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def get_user(self):\n        _headers = {}\n        _body = {\"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"}\n        with self.client.get(\"http://127.0.0.1:5006/api/users/42\", name=\"GET_User\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def get_profiles(self):\n        _headers = {\"Content-Type\": \"application/json\", \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"}\n        _body = {\"displayName\": \"Jane A. Doe\", \"email\": \"jane.a.doe@example.com\"}\n        with self.client.patch(\"http://127.0.0.1:5006/api/users/42/profile\", name=\"GET_Profiles\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def get_inventory(self):\n        _headers = {}\n        with self.client.get(\"http://127.0.0.1:5006/api/inventory/sku/WIDGET-100\", name=\"GET_Inventory\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def payments_charge(self):\n        _headers = {\"Content-Type\": \"application/json\", \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\", \"Idempotency-Key\": \"4d7f1a9c-3b5e-4c8f-91a2-6e0d3b5f8a1c\"}\n        _body = {\"orderId\": \"ORD-20931\", \"amount\": 102.63, \"currency\": \"USD\", \"paymentMethodId\": \"pm_3f8a1c2e\"}\n        with self.client.post(\"http://127.0.0.1:5006/api/payments/charge\", name=\"Payments_Charge\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def payments_refund(self):\n        _headers = {\"Content-Type\": \"application/json\", \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"}\n        _body = {\"transactionId\": \"txn_7c2e9b4f1a3d5c8e\", \"amount\": 102.63, \"reason\": \"customer_request\"}\n        with self.client.post(\"http://127.0.0.1:5006/api/payments/refund\", name=\"Payments_Refund\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def inventory_reserve(self):\n        _headers = {\"Content-Type\": \"application/json\"}\n        _body = {\"sku\": \"WIDGET-100\", \"quantity\": 5, \"orderId\": \"ORD-20944\"}\n        with self.client.post(\"http://127.0.0.1:5006/api/inventory/reserve\", name=\"Inventory_Reserve\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n",
+    "storage": "local"
+  }
+]

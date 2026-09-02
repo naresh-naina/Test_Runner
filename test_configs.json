@@ -1,0 +1,329 @@
+[
+  {
+    "config_id": "649b58f7",
+    "name": "Multi_Agent_Test_Errors_But_200",
+    "ts": 1788172300.2773066,
+    "config": {
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoints": [
+        {
+          "name": "Auth_Login",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/auth/login",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "username": "jane.doe@example.com",
+            "password": "P@ssw0rd123"
+          },
+          "weight": 3,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Auth_Refresh",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/auth/refresh",
+          "headers": {
+            "refreshToken": "8a3f6c1d2e9b4f7702c8e1a4d6f9b2c5e8a1d4f7b0c3e6a9d2f5b8c1e4a7d0f3"
+          },
+          "body": {
+            "Content-Type": "application/json"
+          },
+          "weight": 2,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "GET_User",
+          "method": "GET",
+          "path": "http://127.0.0.1:5006/api/users/42",
+          "headers": null,
+          "body": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "GET_Profiles",
+          "method": "PATCH",
+          "path": "http://127.0.0.1:5006/api/users/42/profile",
+          "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "body": {
+            "displayName": "Jane A. Doe",
+            "email": "jane.a.doe@example.com"
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "GET_Inventory",
+          "method": "GET",
+          "path": "http://127.0.0.1:5006/api/inventory/sku/WIDGET-100",
+          "headers": null,
+          "body": null,
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Payments_Charge",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/payments/charge",
+          "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "Idempotency-Key": "4d7f1a9c-3b5e-4c8f-91a2-6e0d3b5f8a1c"
+          },
+          "body": {
+            "orderId": "ORD-20931",
+            "amount": 102.63,
+            "currency": "USD",
+            "paymentMethodId": "pm_3f8a1c2e"
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Payments_Refund",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/payments/refund",
+          "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "body": {
+            "transactionId": "txn_7c2e9b4f1a3d5c8e",
+            "amount": 102.63,
+            "reason": "customer_request"
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Inventory_Reserve",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/inventory/reserve",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "sku": "WIDGET-100",
+            "quantity": 5,
+            "orderId": "ORD-20944"
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        }
+      ],
+      "users": 10,
+      "spawn_rate": 2.0,
+      "duration": 200,
+      "think_time_min": 0.5,
+      "think_time_max": 2.0,
+      "history_target": "local"
+    }
+  },
+  {
+    "config_id": "e4ea2209",
+    "name": "Multi_Agent_Test",
+    "ts": 1788171363.8348448,
+    "config": {
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoints": [
+        {
+          "name": "Auth_Login",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/auth/login",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "username": "jane.doe@example.com",
+            "password": "P@ssw0rd123"
+          },
+          "weight": 3,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Auth_Refresh",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/auth/refresh",
+          "headers": {
+            "refreshToken": "8a3f6c1d2e9b4f7702c8e1a4d6f9b2c5e8a1d4f7b0c3e6a9d2f5b8c1e4a7d0f3"
+          },
+          "body": {
+            "Content-Type": "application/json"
+          },
+          "weight": 2,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "GET_User",
+          "method": "GET",
+          "path": "http://127.0.0.1:5006/api/users/42",
+          "headers": null,
+          "body": {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "GET_Profiles",
+          "method": "PATCH",
+          "path": "http://127.0.0.1:5006/api/users/42/profile",
+          "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "body": {
+            "displayName": "Jane A. Doe",
+            "email": "jane.a.doe@example.com"
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "GET_Inventory",
+          "method": "GET",
+          "path": "http://127.0.0.1:5006/api/inventory/sku/WIDGET-100",
+          "headers": null,
+          "body": null,
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Payments_Charge",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/payments/charge",
+          "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "Idempotency-Key": "4d7f1a9c-3b5e-4c8f-91a2-6e0d3b5f8a1c"
+          },
+          "body": {
+            "orderId": "ORD-20931",
+            "amount": 102.63,
+            "currency": "USD",
+            "paymentMethodId": "pm_3f8a1c2e"
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        }
+      ],
+      "users": 10,
+      "spawn_rate": 2.0,
+      "duration": 200,
+      "think_time_min": 0.5,
+      "think_time_max": 2.0,
+      "history_target": "local"
+    }
+  },
+  {
+    "config_id": "8f09c37b",
+    "name": "agent_test3",
+    "ts": 1787736470.2792344,
+    "config": {
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoints": [
+        {
+          "name": "List Posts",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/test/testendpoint1",
+          "headers": {
+            "ClientId": "123456789"
+          },
+          "body": {
+            "test": 1
+          },
+          "weight": 3,
+          "timeout": 1.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Get Post",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/test/testendpoint2",
+          "headers": {
+            "ClientId": "123456789"
+          },
+          "body": {
+            "test": 2
+          },
+          "weight": 2,
+          "timeout": 1.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/test/testendpoint3",
+          "headers": {
+            "ClientId": "123456789"
+          },
+          "body": {
+            "test": 3
+          },
+          "weight": 1,
+          "timeout": 1.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Login",
+          "method": "POST",
+          "path": "http://127.0.0.1:5006/api/test/login",
+          "headers": {
+            "Clientid": "12345"
+          },
+          "body": {
+            "id": "45667"
+          },
+          "weight": 1,
+          "timeout": 1.0,
+          "extract": [],
+          "inject": []
+        }
+      ],
+      "users": 10,
+      "spawn_rate": 2.0,
+      "duration": 200,
+      "think_time_min": 0.5,
+      "think_time_max": 2.0,
+      "history_target": "local"
+    }
+  }
+]
