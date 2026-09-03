@@ -21,20 +21,12 @@ Decisioning decided. The actual judgment — is this escalation-worthy — lives
 in agents_decisioning.py, not here. See that module's docstring for why this
 is split out rather than folded into the Orchestrator's own reasoning.
 
-### MCP ###
-This is the one place an in-process MCP *server* gets created
-(claude_agent_sdk.create_sdk_mcp_server) and wired into a ClaudeAgentOptions
-session (mcp_servers=...). The tools it serves are DECLARED in
-agents_analysis.py, agents_decisioning.py, and agents_incident.py (via the
-@tool decorator in each) — this file only assembles them into one server (a
-*different* tool set depending on is_final — see run_orchestrator_for_test)
-and grants this session permission to call them.
-
-Gotcha found by live testing (not obvious from the SDK's own docstring
-example, which uses bare tool names): allowed_tools entries for an in-process
-SDK MCP server must use the "mcp__<server_name>__<tool_name>" form. A bare
-tool name is silently denied under permission_mode="dontAsk" — the
-orchestrator just reports it can't proceed instead of erroring loudly.
+### Google ADK function tools ###
+This is the one place the ADK Orchestrator agent is assembled. The tools are
+plain async Python functions returned by agents_analysis.py,
+agents_decisioning.py, and agents_incident.py. The applicable set is built
+fresh for every run: mid-run calls only receive analysis, making incident
+filing structurally unavailable before the test ends.
 
 Every step is reported through on_step(agent, status, detail) so the caller
 (monitor.py) can broadcast it to the dashboard in real time.
@@ -45,8 +37,7 @@ import logging
 import time
 from typing import Awaitable, Callable, Optional
 
-from claude_agent_sdk import ClaudeAgentOptions, ResultMessage, create_sdk_mcp_server, query
-
+from adk_runtime import run_agent
 import agents_analysis
 import agents_decisioning
 import agents_incident
@@ -54,7 +45,7 @@ from agents_common import log_jsonl
 
 logger = logging.getLogger("agents.orchestrator")
 
-ORCHESTRATOR_MODEL = "claude-sonnet-5"
+ORCHESTRATOR_MODEL = "gemini-3.1-pro-preview"
 
 # Throttle for mid-run investigate calls — these are triggered by Agent 1
 # flagging CONCERNING, which can happen frequently; each mid-run call is a
@@ -150,31 +141,18 @@ async def run_orchestrator_for_test(metrics: dict, on_step: OnStep, is_final: bo
     """
     state = OrchestratorRunState(metrics, on_step)
 
-    # ### MCP: assemble this run's in-process server ###
-    # A fresh server (and fresh tool closures over a fresh `state`) per
-    # invocation — cheap, and keeps one run's state from ever leaking into
-    # another's. The tool set itself differs by mode: decide_escalation and
-    # submit_incident are simply not built/registered for a mid-run call, so
-    # it's not just prompted against — they structurally do not exist as
-    # callable tools.
+    # A fresh set of ADK function tools closes over this run's state. In
+    # mid-run mode, deciding and filing tools do not exist at all.
     if is_final:
         tools = [
             agents_analysis.build_analyze_failures_tool(state),
             agents_decisioning.build_decide_escalation_tool(state),
             agents_incident.build_submit_incident_tool(state),
         ]
-        allowed_tools = [
-            "mcp__incident_pipeline__analyze_failures",
-            "mcp__incident_pipeline__decide_escalation",
-            "mcp__incident_pipeline__submit_incident",
-        ]
         system_prompt = ORCHESTRATOR_FINAL_SYSTEM_PROMPT
     else:
         tools = [agents_analysis.build_analyze_failures_tool(state)]
-        allowed_tools = ["mcp__incident_pipeline__analyze_failures"]
         system_prompt = ORCHESTRATOR_MIDRUN_SYSTEM_PROMPT
-
-    server = create_sdk_mcp_server(name="incident_pipeline", tools=tools)
 
     stats = metrics.get("stats") or []
     summary = {
@@ -194,26 +172,15 @@ async def run_orchestrator_for_test(metrics: dict, on_step: OnStep, is_final: bo
         ],
     }
 
-    options = ClaudeAgentOptions(
-        model=ORCHESTRATOR_MODEL,
-        system_prompt=system_prompt,
-        permission_mode="dontAsk",
-        # ### MCP: register the server, and explicitly allow only its
-        # applicable tool(s) for this mode ###
-        # See the module docstring for the mcp__<server>__<tool> naming gotcha.
-        mcp_servers={"incident_pipeline": server},
-        allowed_tools=allowed_tools,
-        max_turns=6,
-    )
-
     note = "Reviewing test outcome..." if is_final else "Checking in on a CONCERNING flag from Monitor..."
     await state.on_step("orchestrator", "active", {"note": note, "summary": summary, "final": is_final})
 
     final_text = ""
     try:
-        async for message in query(prompt=json.dumps(summary), options=options):
-            if isinstance(message, ResultMessage):
-                final_text = message.result or ""
+        final_text = await run_agent(
+            name="incident_orchestrator", model=ORCHESTRATOR_MODEL,
+            instruction=system_prompt, prompt=json.dumps(summary), tools=tools,
+        )
     except Exception as e:
         logger.error(f"orchestrator query failed (is_final={is_final}): {e}")
         await state.on_step("orchestrator", "error", {"error": str(e), "final": is_final})

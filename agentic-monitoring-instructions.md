@@ -8,20 +8,20 @@ for API load testing. Key files:
 - `utils/runner.py` — `LocustRunner`, parses Locust CSV output into `get_metrics()`,
   maintains `timeseries` list, exposes `stop()`
 
-Goal: build a small agentic system, using the **Claude Agent SDK**, that watches a
+Goal: build a small agentic system, using the **Google Agent Development Kit (ADK)**, that watches a
 running load test and can autonomously flag anomalies, investigate them, and decide
 on an incident action (e.g. stop the test). Build this **incrementally, in phases**.
 Do not jump straight to the full multi-agent system — implement and verify each
 phase before moving to the next.
 
-Authentication: use the existing Claude Code / Claude subscription login. Do not
-add `ANTHROPIC_API_KEY` handling.
+Authentication: use Google ADK's standard Gemini API-key or Vertex AI
+credentials. Do not add provider-specific credential handling to application code.
 
 ---
 
 ## Phase 1 — Single Monitoring Agent (no orchestration yet)
 
-**Goal:** prove the basic loop works — read live metrics, have one Claude Agent SDK
+**Goal:** prove the basic loop works — read live metrics, have one Google ADK
 agent judge them, print a verdict. No sub-agents, no tool-calling between agents yet.
 
 1. Create a new folder `agents/` at repo root (do not touch existing app code).
@@ -30,7 +30,7 @@ agent judge them, print a verdict. No sub-agents, no tool-calling between agents
      existing endpoint, don't duplicate metrics logic).
    - Every time a snapshot arrives, pass the relevant fields (`rps`, `avg_response_time`,
      `p95_response_time`, `total_failures`, per-endpoint `failure_rate` from `stats`)
-     to a Claude Agent SDK query.
+     to a Google ADK agent query.
    - The agent's job: classify the snapshot as `OK` or `CONCERNING`, with a one-line
      reason. Keep the system prompt narrow and explicit about thresholds to reason
      about (e.g. failure rate trending up, p95 spiking, rps dropping) rather than

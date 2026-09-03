@@ -6,26 +6,21 @@ finished test run, identifies which APIs failed and the most likely root
 cause — grounded in the actual error content (including any response body
 captured on failure; see utils/script_generator.py) rather than fabricated.
 
-### MCP ###
-This agent is never called directly. It is wrapped as an in-process MCP tool
-("analyze_failures") via claude_agent_sdk's @tool decorator in
-build_analyze_failures_tool() below. That tool is registered into the
-Orchestrator's in-process MCP server in agents_orchestrator.py
-(create_sdk_mcp_server(...)) — the Orchestrator's LLM session calls it
-exactly like any other tool, with no idea that this particular "tool" is
-itself a full nested LLM query.
+### Google ADK tool ###
+This agent is invoked by the Orchestrator through the native ADK function tool
+returned from build_analyze_failures_tool(). The function closes over the
+current run state; no MCP server or subprocess is required.
 """
 
 import json
 import logging
 
-from claude_agent_sdk import ClaudeAgentOptions, ResultMessage, query, tool
-
+from adk_runtime import run_agent
 from agents_common import log_jsonl, strip_json_fences
 
 logger = logging.getLogger("agents.analysis")
 
-ANALYSIS_MODEL = "claude-haiku-4-5"
+ANALYSIS_MODEL = "gemini-3.6-flash"
 
 ANALYSIS_SYSTEM_PROMPT = """You are a narrow, read-only analysis agent for a Locust load test.
 You are given the test's per-endpoint stats and raw error entries collected during the run.
@@ -118,19 +113,10 @@ async def run_analysis(final_metrics: dict) -> list[dict]:
     failing_stats = [s for s in stats if s.get("num_failures", 0) > 0]
     payload = {"failing_endpoints": failing_stats, "raw_errors": errors}
 
-    options = ClaudeAgentOptions(
-        model=ANALYSIS_MODEL,
-        system_prompt=ANALYSIS_SYSTEM_PROMPT,
-        permission_mode="dontAsk",
-        tools=[],
-        allowed_tools=[],
-        max_turns=1,
+    result_text = await run_agent(
+        name="failure_analysis", model=ANALYSIS_MODEL,
+        instruction=ANALYSIS_SYSTEM_PROMPT, prompt=json.dumps(payload),
     )
-
-    result_text = ""
-    async for message in query(prompt=json.dumps(payload), options=options):
-        if isinstance(message, ResultMessage):
-            result_text = message.result or ""
 
     cleaned = strip_json_fences(result_text)
     data = json.loads(cleaned)
@@ -141,30 +127,19 @@ async def run_analysis(final_metrics: dict) -> list[dict]:
 
 
 def build_analyze_failures_tool(state):
-    """### MCP TOOL DECLARATION ###
-    claude_agent_sdk.tool() turns the function below into an SdkMcpTool.
-    create_sdk_mcp_server() (called in agents_orchestrator.py) serves it
-    in-process — no subprocess, no network hop, direct access to `state` via
-    closure. `state` is the OrchestratorRunState created fresh for each
-    test's orchestrator run — see agents_orchestrator.py.
-    """
+    """Return the native ADK tool function for this orchestrator run."""
 
-    @tool(
-        "analyze_failures",
-        "Inspect this test's collected errors and per-endpoint stats to identify which APIs "
-        "failed and why. Must be called before submit_incident.",
-        {},
-    )
-    async def analyze_failures_tool(args):
+    async def analyze_failures() -> dict:
+        """Inspect errors and endpoint stats. Call before deciding or filing an incident."""
         await state.on_step("analysis", "active", {"note": "Inspecting failed endpoints..."})
         try:
             result = await run_analysis(state.final_metrics)
         except Exception as e:
             logger.error(f"analyze_failures failed: {e}")
             await state.on_step("analysis", "error", {"error": str(e)})
-            return {"content": [{"type": "text", "text": f"Analysis failed: {e}"}], "is_error": True}
+            return {"error": f"Analysis failed: {e}"}
         state.analysis_result = result
         await state.on_step("analysis", "done", {"result": result})
-        return {"content": [{"type": "text", "text": json.dumps(result)}]}
+        return {"findings": result}
 
-    return analyze_failures_tool
+    return analyze_failures

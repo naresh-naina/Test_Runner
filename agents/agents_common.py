@@ -19,8 +19,7 @@ LOG_DIR.mkdir(exist_ok=True)
 
 
 def strip_json_fences(text: str) -> str:
-    """Claude sometimes wraps a JSON response in ```json ... ``` even when
-    told not to — strip that before json.loads()."""
+    """Models can wrap JSON in fences even when told not to; strip before parsing."""
     return text.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
 
 

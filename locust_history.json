@@ -1,5 +1,1617 @@
 [
   {
+    "run_id": "86017d12",
+    "ts": 1788413790.040545,
+    "label": "https://jsonplaceholder.typicode.com [List Posts, Get Post, Create Post]",
+    "config": {
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoints": [
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "path": "/posts",
+          "headers": null,
+          "body": null,
+          "weight": 3,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "path": "/posts/1",
+          "headers": null,
+          "body": null,
+          "weight": 2,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "path": "/posts",
+          "headers": null,
+          "body": {
+            "title": "test",
+            "body": "content",
+            "userId": 1
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        }
+      ],
+      "users": 1,
+      "spawn_rate": 2.0,
+      "duration": 30,
+      "think_time_min": 0.5,
+      "think_time_max": 2.0,
+      "history_target": "local"
+    },
+    "metrics": {
+      "status": "completed",
+      "elapsed": 36.1,
+      "total_requests": 19,
+      "total_failures": 0,
+      "rps": 0.71,
+      "avg_response_time": 191.9,
+      "p95_response_time": 740.0,
+      "user_count": 1,
+      "stats": [
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "num_requests": 5,
+          "num_failures": 0,
+          "avg_response_time": 437.2985082001833,
+          "min_response_time": 309.4814159994712,
+          "max_response_time": 741.8550409984164,
+          "p50": 380.0,
+          "p95": 740.0,
+          "p99": 740.0,
+          "rps": 0.1878547948807913,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "num_requests": 2,
+          "num_failures": 0,
+          "avg_response_time": 87.97112550109887,
+          "min_response_time": 86.35920900087513,
+          "max_response_time": 89.58304200132261,
+          "p50": 90.0,
+          "p95": 90.0,
+          "p99": 90.0,
+          "rps": 0.07514191795231652,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "num_requests": 12,
+          "num_failures": 0,
+          "avg_response_time": 106.9593194999167,
+          "min_response_time": 87.83966699957091,
+          "max_response_time": 269.1615000003367,
+          "p50": 92.0,
+          "p95": 270.0,
+          "p99": 270.0,
+          "rps": 0.45085150771389915,
+          "failure_rate": 0.0
+        }
+      ],
+      "errors": []
+    },
+    "timeseries": [
+      {
+        "rps": 3.71,
+        "avg_rt": 269.2,
+        "p95_rt": 270.0,
+        "p99_rt": 270.0,
+        "total_req": 1,
+        "failures": 0,
+        "users": 1,
+        "t": 8.0
+      },
+      {
+        "rps": 1.15,
+        "avg_rt": 457.2,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 3,
+        "failures": 0,
+        "users": 1,
+        "t": 10.0
+      },
+      {
+        "rps": 0.93,
+        "avg_rt": 366.4,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 4,
+        "failures": 0,
+        "users": 1,
+        "t": 12.0
+      },
+      {
+        "rps": 0.87,
+        "avg_rt": 275.7,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 6,
+        "failures": 0,
+        "users": 1,
+        "t": 14.0
+      },
+      {
+        "rps": 0.78,
+        "avg_rt": 249.2,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 7,
+        "failures": 0,
+        "users": 1,
+        "t": 16.0
+      },
+      {
+        "rps": 0.77,
+        "avg_rt": 229.1,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 8,
+        "failures": 0,
+        "users": 1,
+        "t": 18.0
+      },
+      {
+        "rps": 0.74,
+        "avg_rt": 213.9,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 9,
+        "failures": 0,
+        "users": 1,
+        "t": 20.0
+      },
+      {
+        "rps": 0.73,
+        "avg_rt": 191.2,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 11,
+        "failures": 0,
+        "users": 1,
+        "t": 22.0
+      },
+      {
+        "rps": 0.76,
+        "avg_rt": 176.1,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 13,
+        "failures": 0,
+        "users": 1,
+        "t": 24.0
+      },
+      {
+        "rps": 0.74,
+        "avg_rt": 170.0,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 14,
+        "failures": 0,
+        "users": 1,
+        "t": 26.0
+      },
+      {
+        "rps": 0.74,
+        "avg_rt": 170.0,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 14,
+        "failures": 0,
+        "users": 1,
+        "t": 28.0
+      },
+      {
+        "rps": 0.73,
+        "avg_rt": 183.7,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 15,
+        "failures": 0,
+        "users": 1,
+        "t": 30.0
+      },
+      {
+        "rps": 0.73,
+        "avg_rt": 190.9,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 17,
+        "failures": 0,
+        "users": 1,
+        "t": 32.0
+      },
+      {
+        "rps": 0.72,
+        "avg_rt": 197.5,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 18,
+        "failures": 0,
+        "users": 1,
+        "t": 34.0
+      },
+      {
+        "rps": 0.71,
+        "avg_rt": 191.9,
+        "p95_rt": 740.0,
+        "p99_rt": 740.0,
+        "total_req": 19,
+        "failures": 0,
+        "users": 1,
+        "t": 35.7
+      }
+    ],
+    "script": "# Auto-generated Locust script\n# Generated by LocustForge API Testing Tool\n\nfrom locust import HttpUser, task, between\nimport json\n\n\nclass LoadTestUser(HttpUser):\n    host = \"https://jsonplaceholder.typicode.com\"\n    wait_time = between(0.5, 2.0)\n\n    @task(3)\n    def list_posts(self):\n        _headers = {}\n        with self.client.get(\"/posts\", name=\"List Posts\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(2)\n    def get_post(self):\n        _headers = {}\n        with self.client.get(\"/posts/1\", name=\"Get Post\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def create_post(self):\n        _headers = {}\n        _body = {\"title\": \"test\", \"body\": \"content\", \"userId\": 1}\n        with self.client.post(\"/posts\", name=\"Create Post\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n",
+    "storage": "local"
+  },
+  {
+    "run_id": "62507077",
+    "ts": 1788409052.184434,
+    "label": "https://jsonplaceholder.typicode.com [List Posts, Get Post, Create Post]",
+    "config": {
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoints": [
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "path": "/posts",
+          "headers": null,
+          "body": null,
+          "weight": 3,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "path": "/posts/1",
+          "headers": null,
+          "body": null,
+          "weight": 2,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "path": "/posts",
+          "headers": null,
+          "body": {
+            "title": "test",
+            "body": "content",
+            "userId": 1
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        }
+      ],
+      "users": 10,
+      "spawn_rate": 2.0,
+      "duration": 30,
+      "think_time_min": 0.5,
+      "think_time_max": 2.0,
+      "history_target": "local"
+    },
+    "metrics": {
+      "status": "completed",
+      "elapsed": 30.6,
+      "total_requests": 214,
+      "total_failures": 0,
+      "rps": 7.36,
+      "avg_response_time": 52.1,
+      "p95_response_time": 220.0,
+      "user_count": 10,
+      "stats": [
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "num_requests": 28,
+          "num_failures": 0,
+          "avg_response_time": 268.3051191428863,
+          "min_response_time": 216.56304199950682,
+          "max_response_time": 625.7614579999426,
+          "p50": 220.0,
+          "p95": 630.0,
+          "p99": 630.0,
+          "rps": 0.9624947808407136,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "num_requests": 77,
+          "num_failures": 0,
+          "avg_response_time": 17.859058948074974,
+          "min_response_time": 12.009375000161526,
+          "max_response_time": 51.78849999992963,
+          "p50": 15.0,
+          "p95": 44.0,
+          "p99": 52.0,
+          "rps": 2.6468606473119625,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "num_requests": 109,
+          "num_failures": 0,
+          "avg_response_time": 20.82943922934246,
+          "min_response_time": 13.671833999978844,
+          "max_response_time": 60.40666699936992,
+          "p50": 18.0,
+          "p95": 43.0,
+          "p99": 55.0,
+          "rps": 3.7468546825584923,
+          "failure_rate": 0.0
+        }
+      ],
+      "errors": []
+    },
+    "timeseries": [
+      {
+        "rps": 43.74,
+        "avg_rt": 43.1,
+        "p95_rt": 45.0,
+        "p99_rt": 45.0,
+        "total_req": 2,
+        "failures": 0,
+        "users": 10,
+        "t": 2.0
+      },
+      {
+        "rps": 3.69,
+        "avg_rt": 35.1,
+        "p95_rt": 60.0,
+        "p99_rt": 60.0,
+        "total_req": 11,
+        "failures": 0,
+        "users": 10,
+        "t": 4.0
+      },
+      {
+        "rps": 6.11,
+        "avg_rt": 48.4,
+        "p95_rt": 60.0,
+        "p99_rt": 630.0,
+        "total_req": 30,
+        "failures": 0,
+        "users": 10,
+        "t": 6.0
+      },
+      {
+        "rps": 6.36,
+        "avg_rt": 57.5,
+        "p95_rt": 220.0,
+        "p99_rt": 630.0,
+        "total_req": 44,
+        "failures": 0,
+        "users": 10,
+        "t": 8.0
+      },
+      {
+        "rps": 6.66,
+        "avg_rt": 63.9,
+        "p95_rt": 620.0,
+        "p99_rt": 630.0,
+        "total_req": 60,
+        "failures": 0,
+        "users": 10,
+        "t": 10.0
+      },
+      {
+        "rps": 6.82,
+        "avg_rt": 57.5,
+        "p95_rt": 220.0,
+        "p99_rt": 630.0,
+        "total_req": 75,
+        "failures": 0,
+        "users": 10,
+        "t": 12.0
+      },
+      {
+        "rps": 7.0,
+        "avg_rt": 57.6,
+        "p95_rt": 220.0,
+        "p99_rt": 630.0,
+        "total_req": 90,
+        "failures": 0,
+        "users": 10,
+        "t": 14.0
+      },
+      {
+        "rps": 6.93,
+        "avg_rt": 54.2,
+        "p95_rt": 220.0,
+        "p99_rt": 630.0,
+        "total_req": 104,
+        "failures": 0,
+        "users": 10,
+        "t": 16.0
+      },
+      {
+        "rps": 6.98,
+        "avg_rt": 53.5,
+        "p95_rt": 220.0,
+        "p99_rt": 630.0,
+        "total_req": 118,
+        "failures": 0,
+        "users": 10,
+        "t": 18.0
+      },
+      {
+        "rps": 7.12,
+        "avg_rt": 53.7,
+        "p95_rt": 220.0,
+        "p99_rt": 630.0,
+        "total_req": 134,
+        "failures": 0,
+        "users": 10,
+        "t": 20.0
+      },
+      {
+        "rps": 7.28,
+        "avg_rt": 52.1,
+        "p95_rt": 220.0,
+        "p99_rt": 630.0,
+        "total_req": 153,
+        "failures": 0,
+        "users": 10,
+        "t": 22.0
+      },
+      {
+        "rps": 7.24,
+        "avg_rt": 53.5,
+        "p95_rt": 220.0,
+        "p99_rt": 630.0,
+        "total_req": 167,
+        "failures": 0,
+        "users": 10,
+        "t": 24.0
+      },
+      {
+        "rps": 7.26,
+        "avg_rt": 51.7,
+        "p95_rt": 220.0,
+        "p99_rt": 630.0,
+        "total_req": 182,
+        "failures": 0,
+        "users": 10,
+        "t": 26.0
+      },
+      {
+        "rps": 7.25,
+        "avg_rt": 51.4,
+        "p95_rt": 220.0,
+        "p99_rt": 630.0,
+        "total_req": 195,
+        "failures": 0,
+        "users": 10,
+        "t": 28.0
+      },
+      {
+        "rps": 7.36,
+        "avg_rt": 52.1,
+        "p95_rt": 220.0,
+        "p99_rt": 620.0,
+        "total_req": 214,
+        "failures": 0,
+        "users": 10,
+        "t": 30.0
+      },
+      {
+        "rps": 7.36,
+        "avg_rt": 52.1,
+        "p95_rt": 220.0,
+        "p99_rt": 620.0,
+        "total_req": 214,
+        "failures": 0,
+        "users": 10,
+        "t": 30.2
+      }
+    ],
+    "script": "# Auto-generated Locust script\n# Generated by LocustForge API Testing Tool\n\nfrom locust import HttpUser, task, between\nimport json\n\n\nclass LoadTestUser(HttpUser):\n    host = \"https://jsonplaceholder.typicode.com\"\n    wait_time = between(0.5, 2.0)\n\n    @task(3)\n    def list_posts(self):\n        _headers = {}\n        with self.client.get(\"/posts\", name=\"List Posts\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(2)\n    def get_post(self):\n        _headers = {}\n        with self.client.get(\"/posts/1\", name=\"Get Post\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def create_post(self):\n        _headers = {}\n        _body = {\"title\": \"test\", \"body\": \"content\", \"userId\": 1}\n        with self.client.post(\"/posts\", name=\"Create Post\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n",
+    "storage": "local"
+  },
+  {
+    "run_id": "acf262f5",
+    "ts": 1788408765.167349,
+    "label": "https://jsonplaceholder.typicode.com [List Posts, Get Post, Create Post]",
+    "config": {
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoints": [
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "path": "/posts",
+          "headers": null,
+          "body": null,
+          "weight": 3,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "path": "/posts/1",
+          "headers": null,
+          "body": null,
+          "weight": 2,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "path": "/posts",
+          "headers": null,
+          "body": {
+            "title": "test",
+            "body": "content",
+            "userId": 1
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        }
+      ],
+      "users": 10,
+      "spawn_rate": 2.0,
+      "duration": 30,
+      "think_time_min": 0.5,
+      "think_time_max": 2.0,
+      "history_target": "local"
+    },
+    "metrics": {
+      "status": "completed",
+      "elapsed": 30.6,
+      "total_requests": 206,
+      "total_failures": 0,
+      "rps": 7.11,
+      "avg_response_time": 52.9,
+      "p95_response_time": 230.0,
+      "user_count": 10,
+      "stats": [
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "num_requests": 25,
+          "num_failures": 0,
+          "avg_response_time": 287.27167663997534,
+          "min_response_time": 216.6707079995831,
+          "max_response_time": 671.4775419995931,
+          "p50": 230.0,
+          "p95": 660.0,
+          "p99": 670.0,
+          "rps": 0.8626539342086682,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "num_requests": 70,
+          "num_failures": 0,
+          "avg_response_time": 19.405414757134817,
+          "min_response_time": 11.991082999884384,
+          "max_response_time": 50.3719580001416,
+          "p50": 18.0,
+          "p95": 40.0,
+          "p99": 50.0,
+          "rps": 2.415431015784271,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "num_requests": 111,
+          "num_failures": 0,
+          "avg_response_time": 21.23234499997436,
+          "min_response_time": 13.615500000014435,
+          "max_response_time": 66.63775000015448,
+          "p50": 19.0,
+          "p95": 36.0,
+          "p99": 51.0,
+          "rps": 3.830183467886487,
+          "failure_rate": 0.0
+        }
+      ],
+      "errors": []
+    },
+    "timeseries": [
+      {
+        "rps": 3.88,
+        "avg_rt": 45.8,
+        "p95_rt": 67.0,
+        "p99_rt": 67.0,
+        "total_req": 3,
+        "failures": 0,
+        "users": 10,
+        "t": 2.0
+      },
+      {
+        "rps": 4.64,
+        "avg_rt": 113.6,
+        "p95_rt": 660.0,
+        "p99_rt": 660.0,
+        "total_req": 14,
+        "failures": 0,
+        "users": 10,
+        "t": 4.0
+      },
+      {
+        "rps": 5.41,
+        "avg_rt": 87.3,
+        "p95_rt": 290.0,
+        "p99_rt": 660.0,
+        "total_req": 27,
+        "failures": 0,
+        "users": 10,
+        "t": 6.0
+      },
+      {
+        "rps": 5.71,
+        "avg_rt": 108.1,
+        "p95_rt": 660.0,
+        "p99_rt": 670.0,
+        "total_req": 40,
+        "failures": 0,
+        "users": 10,
+        "t": 8.0
+      },
+      {
+        "rps": 6.12,
+        "avg_rt": 95.8,
+        "p95_rt": 630.0,
+        "p99_rt": 670.0,
+        "total_req": 54,
+        "failures": 0,
+        "users": 10,
+        "t": 10.0
+      },
+      {
+        "rps": 6.26,
+        "avg_rt": 83.6,
+        "p95_rt": 290.0,
+        "p99_rt": 670.0,
+        "total_req": 67,
+        "failures": 0,
+        "users": 10,
+        "t": 12.0
+      },
+      {
+        "rps": 6.46,
+        "avg_rt": 72.7,
+        "p95_rt": 270.0,
+        "p99_rt": 670.0,
+        "total_req": 84,
+        "failures": 0,
+        "users": 10,
+        "t": 14.0
+      },
+      {
+        "rps": 6.65,
+        "avg_rt": 70.4,
+        "p95_rt": 270.0,
+        "p99_rt": 670.0,
+        "total_req": 100,
+        "failures": 0,
+        "users": 10,
+        "t": 16.0
+      },
+      {
+        "rps": 6.98,
+        "avg_rt": 64.8,
+        "p95_rt": 240.0,
+        "p99_rt": 660.0,
+        "total_req": 116,
+        "failures": 0,
+        "users": 10,
+        "t": 18.0
+      },
+      {
+        "rps": 7.11,
+        "avg_rt": 65.6,
+        "p95_rt": 270.0,
+        "p99_rt": 660.0,
+        "total_req": 135,
+        "failures": 0,
+        "users": 10,
+        "t": 20.0
+      },
+      {
+        "rps": 7.19,
+        "avg_rt": 60.6,
+        "p95_rt": 240.0,
+        "p99_rt": 660.0,
+        "total_req": 151,
+        "failures": 0,
+        "users": 10,
+        "t": 22.0
+      },
+      {
+        "rps": 7.2,
+        "avg_rt": 57.0,
+        "p95_rt": 230.0,
+        "p99_rt": 660.0,
+        "total_req": 166,
+        "failures": 0,
+        "users": 10,
+        "t": 24.0
+      },
+      {
+        "rps": 7.14,
+        "avg_rt": 57.1,
+        "p95_rt": 240.0,
+        "p99_rt": 660.0,
+        "total_req": 178,
+        "failures": 0,
+        "users": 10,
+        "t": 26.0
+      },
+      {
+        "rps": 7.12,
+        "avg_rt": 54.1,
+        "p95_rt": 230.0,
+        "p99_rt": 660.0,
+        "total_req": 193,
+        "failures": 0,
+        "users": 10,
+        "t": 28.0
+      },
+      {
+        "rps": 7.11,
+        "avg_rt": 52.9,
+        "p95_rt": 230.0,
+        "p99_rt": 630.0,
+        "total_req": 206,
+        "failures": 0,
+        "users": 10,
+        "t": 30.0
+      },
+      {
+        "rps": 7.11,
+        "avg_rt": 52.9,
+        "p95_rt": 230.0,
+        "p99_rt": 630.0,
+        "total_req": 206,
+        "failures": 0,
+        "users": 10,
+        "t": 30.2
+      }
+    ],
+    "script": "# Auto-generated Locust script\n# Generated by LocustForge API Testing Tool\n\nfrom locust import HttpUser, task, between\nimport json\n\n\nclass LoadTestUser(HttpUser):\n    host = \"https://jsonplaceholder.typicode.com\"\n    wait_time = between(0.5, 2.0)\n\n    @task(3)\n    def list_posts(self):\n        _headers = {}\n        with self.client.get(\"/posts\", name=\"List Posts\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(2)\n    def get_post(self):\n        _headers = {}\n        with self.client.get(\"/posts/1\", name=\"Get Post\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def create_post(self):\n        _headers = {}\n        _body = {\"title\": \"test\", \"body\": \"content\", \"userId\": 1}\n        with self.client.post(\"/posts\", name=\"Create Post\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n",
+    "storage": "local"
+  },
+  {
+    "run_id": "3a9d2d79",
+    "ts": 1788408485.601342,
+    "label": "https://jsonplaceholder.typicode.com [List Posts, Get Post, Create Post]",
+    "config": {
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoints": [
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "path": "/posts",
+          "headers": null,
+          "body": null,
+          "weight": 3,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "path": "/posts/1",
+          "headers": null,
+          "body": null,
+          "weight": 2,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "path": "/posts",
+          "headers": null,
+          "body": {
+            "title": "test",
+            "body": "content",
+            "userId": 1
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        }
+      ],
+      "users": 10,
+      "spawn_rate": 2.0,
+      "duration": 30,
+      "think_time_min": 0.5,
+      "think_time_max": 2.0,
+      "history_target": "local"
+    },
+    "metrics": {
+      "status": "completed",
+      "elapsed": 30.6,
+      "total_requests": 208,
+      "total_failures": 0,
+      "rps": 7.15,
+      "avg_response_time": 68.5,
+      "p95_response_time": 230.0,
+      "user_count": 10,
+      "stats": [
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "num_requests": 40,
+          "num_failures": 0,
+          "avg_response_time": 261.4578249749684,
+          "min_response_time": 216.2095829999089,
+          "max_response_time": 669.329624999591,
+          "p50": 220.0,
+          "p95": 630.0,
+          "p99": 670.0,
+          "rps": 1.374393987668559,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "num_requests": 71,
+          "num_failures": 0,
+          "avg_response_time": 18.415461225359508,
+          "min_response_time": 10.49574999979086,
+          "max_response_time": 62.568917000135116,
+          "p50": 17.0,
+          "p95": 29.0,
+          "p99": 63.0,
+          "rps": 2.439549328111692,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "num_requests": 97,
+          "num_failures": 0,
+          "avg_response_time": 25.694933474163186,
+          "min_response_time": 13.941917000011017,
+          "max_response_time": 172.42445800002315,
+          "p50": 21.0,
+          "p95": 53.0,
+          "p99": 170.0,
+          "rps": 3.3329054200962553,
+          "failure_rate": 0.0
+        }
+      ],
+      "errors": []
+    },
+    "timeseries": [
+      {
+        "rps": 24.82,
+        "avg_rt": 63.4,
+        "p95_rt": 79.0,
+        "p99_rt": 79.0,
+        "total_req": 2,
+        "failures": 0,
+        "users": 10,
+        "t": 2.0
+      },
+      {
+        "rps": 3.79,
+        "avg_rt": 127.5,
+        "p95_rt": 670.0,
+        "p99_rt": 670.0,
+        "total_req": 10,
+        "failures": 0,
+        "users": 10,
+        "t": 4.0
+      },
+      {
+        "rps": 5.36,
+        "avg_rt": 90.1,
+        "p95_rt": 270.0,
+        "p99_rt": 670.0,
+        "total_req": 26,
+        "failures": 0,
+        "users": 10,
+        "t": 6.0
+      },
+      {
+        "rps": 6.03,
+        "avg_rt": 92.1,
+        "p95_rt": 270.0,
+        "p99_rt": 670.0,
+        "total_req": 42,
+        "failures": 0,
+        "users": 10,
+        "t": 8.0
+      },
+      {
+        "rps": 6.33,
+        "avg_rt": 77.7,
+        "p95_rt": 290.0,
+        "p99_rt": 670.0,
+        "total_req": 57,
+        "failures": 0,
+        "users": 10,
+        "t": 10.0
+      },
+      {
+        "rps": 6.55,
+        "avg_rt": 77.0,
+        "p95_rt": 270.0,
+        "p99_rt": 670.0,
+        "total_req": 72,
+        "failures": 0,
+        "users": 10,
+        "t": 12.0
+      },
+      {
+        "rps": 6.65,
+        "avg_rt": 74.8,
+        "p95_rt": 240.0,
+        "p99_rt": 670.0,
+        "total_req": 86,
+        "failures": 0,
+        "users": 10,
+        "t": 14.0
+      },
+      {
+        "rps": 6.57,
+        "avg_rt": 72.4,
+        "p95_rt": 240.0,
+        "p99_rt": 670.0,
+        "total_req": 98,
+        "failures": 0,
+        "users": 10,
+        "t": 16.0
+      },
+      {
+        "rps": 6.56,
+        "avg_rt": 74.8,
+        "p95_rt": 240.0,
+        "p99_rt": 630.0,
+        "total_req": 111,
+        "failures": 0,
+        "users": 10,
+        "t": 18.0
+      },
+      {
+        "rps": 6.78,
+        "avg_rt": 72.0,
+        "p95_rt": 230.0,
+        "p99_rt": 630.0,
+        "total_req": 129,
+        "failures": 0,
+        "users": 10,
+        "t": 20.0
+      },
+      {
+        "rps": 6.96,
+        "avg_rt": 74.7,
+        "p95_rt": 230.0,
+        "p99_rt": 630.0,
+        "total_req": 146,
+        "failures": 0,
+        "users": 10,
+        "t": 22.0
+      },
+      {
+        "rps": 6.99,
+        "avg_rt": 73.4,
+        "p95_rt": 230.0,
+        "p99_rt": 630.0,
+        "total_req": 161,
+        "failures": 0,
+        "users": 10,
+        "t": 24.0
+      },
+      {
+        "rps": 7.1,
+        "avg_rt": 70.6,
+        "p95_rt": 230.0,
+        "p99_rt": 630.0,
+        "total_req": 178,
+        "failures": 0,
+        "users": 10,
+        "t": 26.0
+      },
+      {
+        "rps": 7.12,
+        "avg_rt": 69.2,
+        "p95_rt": 230.0,
+        "p99_rt": 630.0,
+        "total_req": 192,
+        "failures": 0,
+        "users": 10,
+        "t": 28.0
+      },
+      {
+        "rps": 7.15,
+        "avg_rt": 68.5,
+        "p95_rt": 230.0,
+        "p99_rt": 630.0,
+        "total_req": 208,
+        "failures": 0,
+        "users": 10,
+        "t": 30.0
+      },
+      {
+        "rps": 7.15,
+        "avg_rt": 68.5,
+        "p95_rt": 230.0,
+        "p99_rt": 630.0,
+        "total_req": 208,
+        "failures": 0,
+        "users": 10,
+        "t": 30.2
+      }
+    ],
+    "script": "# Auto-generated Locust script\n# Generated by LocustForge API Testing Tool\n\nfrom locust import HttpUser, task, between\nimport json\n\n\nclass LoadTestUser(HttpUser):\n    host = \"https://jsonplaceholder.typicode.com\"\n    wait_time = between(0.5, 2.0)\n\n    @task(3)\n    def list_posts(self):\n        _headers = {}\n        with self.client.get(\"/posts\", name=\"List Posts\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(2)\n    def get_post(self):\n        _headers = {}\n        with self.client.get(\"/posts/1\", name=\"Get Post\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def create_post(self):\n        _headers = {}\n        _body = {\"title\": \"test\", \"body\": \"content\", \"userId\": 1}\n        with self.client.post(\"/posts\", name=\"Create Post\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n",
+    "storage": "local"
+  },
+  {
+    "run_id": "65936062",
+    "ts": 1788408116.8823838,
+    "label": "https://jsonplaceholder.typicode.com [List Posts, Get Post, Create Post]",
+    "config": {
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoints": [
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "path": "/posts",
+          "headers": null,
+          "body": null,
+          "weight": 3,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "path": "/posts/1",
+          "headers": null,
+          "body": null,
+          "weight": 2,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "path": "/posts",
+          "headers": null,
+          "body": {
+            "title": "test",
+            "body": "content",
+            "userId": 1
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        }
+      ],
+      "users": 10,
+      "spawn_rate": 2.0,
+      "duration": 30,
+      "think_time_min": 0.5,
+      "think_time_max": 2.0,
+      "history_target": "local"
+    },
+    "metrics": {
+      "status": "completed",
+      "elapsed": 30.6,
+      "total_requests": 211,
+      "total_failures": 0,
+      "rps": 7.28,
+      "avg_response_time": 48.1,
+      "p95_response_time": 220.0,
+      "user_count": 10,
+      "stats": [
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "num_requests": 28,
+          "num_failures": 0,
+          "avg_response_time": 240.19883035709557,
+          "min_response_time": 214.5704590002424,
+          "max_response_time": 627.3889169997346,
+          "p50": 220.0,
+          "p95": 290.0,
+          "p99": 630.0,
+          "rps": 0.9662136454753644,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "num_requests": 78,
+          "num_failures": 0,
+          "avg_response_time": 16.900947589804744,
+          "min_response_time": 11.003499999787891,
+          "max_response_time": 48.636958000315644,
+          "p50": 14.0,
+          "p95": 42.0,
+          "p99": 49.0,
+          "rps": 2.691595155252801,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "num_requests": 105,
+          "num_failures": 0,
+          "avg_response_time": 20.056895247597865,
+          "min_response_time": 12.758957999722043,
+          "max_response_time": 72.98199999968347,
+          "p50": 18.0,
+          "p95": 28.0,
+          "p99": 66.0,
+          "rps": 3.6233011705326166,
+          "failure_rate": 0.0
+        }
+      ],
+      "errors": []
+    },
+    "timeseries": [
+      {
+        "rps": 37.76,
+        "avg_rt": 44.4,
+        "p95_rt": 51.0,
+        "p99_rt": 51.0,
+        "total_req": 2,
+        "failures": 0,
+        "users": 10,
+        "t": 2.0
+      },
+      {
+        "rps": 4.1,
+        "avg_rt": 71.7,
+        "p95_rt": 260.0,
+        "p99_rt": 260.0,
+        "total_req": 12,
+        "failures": 0,
+        "users": 10,
+        "t": 4.0
+      },
+      {
+        "rps": 5.43,
+        "avg_rt": 83.0,
+        "p95_rt": 260.0,
+        "p99_rt": 630.0,
+        "total_req": 27,
+        "failures": 0,
+        "users": 10,
+        "t": 6.0
+      },
+      {
+        "rps": 6.05,
+        "avg_rt": 71.2,
+        "p95_rt": 260.0,
+        "p99_rt": 630.0,
+        "total_req": 42,
+        "failures": 0,
+        "users": 10,
+        "t": 8.0
+      },
+      {
+        "rps": 6.14,
+        "avg_rt": 62.0,
+        "p95_rt": 260.0,
+        "p99_rt": 630.0,
+        "total_req": 55,
+        "failures": 0,
+        "users": 10,
+        "t": 10.0
+      },
+      {
+        "rps": 6.57,
+        "avg_rt": 52.6,
+        "p95_rt": 230.0,
+        "p99_rt": 630.0,
+        "total_req": 70,
+        "failures": 0,
+        "users": 10,
+        "t": 12.0
+      },
+      {
+        "rps": 6.7,
+        "avg_rt": 59.7,
+        "p95_rt": 230.0,
+        "p99_rt": 630.0,
+        "total_req": 87,
+        "failures": 0,
+        "users": 10,
+        "t": 14.0
+      },
+      {
+        "rps": 6.86,
+        "avg_rt": 53.7,
+        "p95_rt": 230.0,
+        "p99_rt": 290.0,
+        "total_req": 102,
+        "failures": 0,
+        "users": 10,
+        "t": 16.0
+      },
+      {
+        "rps": 6.92,
+        "avg_rt": 50.6,
+        "p95_rt": 230.0,
+        "p99_rt": 290.0,
+        "total_req": 118,
+        "failures": 0,
+        "users": 10,
+        "t": 18.0
+      },
+      {
+        "rps": 7.13,
+        "avg_rt": 50.7,
+        "p95_rt": 230.0,
+        "p99_rt": 290.0,
+        "total_req": 136,
+        "failures": 0,
+        "users": 10,
+        "t": 20.0
+      },
+      {
+        "rps": 7.3,
+        "avg_rt": 49.8,
+        "p95_rt": 220.0,
+        "p99_rt": 290.0,
+        "total_req": 152,
+        "failures": 0,
+        "users": 10,
+        "t": 22.0
+      },
+      {
+        "rps": 7.29,
+        "avg_rt": 47.8,
+        "p95_rt": 220.0,
+        "p99_rt": 290.0,
+        "total_req": 168,
+        "failures": 0,
+        "users": 10,
+        "t": 24.0
+      },
+      {
+        "rps": 7.25,
+        "avg_rt": 48.2,
+        "p95_rt": 220.0,
+        "p99_rt": 290.0,
+        "total_req": 179,
+        "failures": 0,
+        "users": 10,
+        "t": 26.0
+      },
+      {
+        "rps": 7.23,
+        "avg_rt": 46.5,
+        "p95_rt": 220.0,
+        "p99_rt": 290.0,
+        "total_req": 196,
+        "failures": 0,
+        "users": 10,
+        "t": 28.0
+      },
+      {
+        "rps": 7.28,
+        "avg_rt": 48.1,
+        "p95_rt": 220.0,
+        "p99_rt": 260.0,
+        "total_req": 211,
+        "failures": 0,
+        "users": 10,
+        "t": 30.0
+      },
+      {
+        "rps": 7.28,
+        "avg_rt": 48.1,
+        "p95_rt": 220.0,
+        "p99_rt": 260.0,
+        "total_req": 211,
+        "failures": 0,
+        "users": 10,
+        "t": 30.2
+      }
+    ],
+    "script": "# Auto-generated Locust script\n# Generated by LocustForge API Testing Tool\n\nfrom locust import HttpUser, task, between\nimport json\n\n\nclass LoadTestUser(HttpUser):\n    host = \"https://jsonplaceholder.typicode.com\"\n    wait_time = between(0.5, 2.0)\n\n    @task(3)\n    def list_posts(self):\n        _headers = {}\n        with self.client.get(\"/posts\", name=\"List Posts\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(2)\n    def get_post(self):\n        _headers = {}\n        with self.client.get(\"/posts/1\", name=\"Get Post\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def create_post(self):\n        _headers = {}\n        _body = {\"title\": \"test\", \"body\": \"content\", \"userId\": 1}\n        with self.client.post(\"/posts\", name=\"Create Post\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n",
+    "storage": "local"
+  },
+  {
+    "run_id": "9eba066a",
+    "ts": 1788407663.17979,
+    "label": "https://jsonplaceholder.typicode.com [List Posts, Get Post, Create Post]",
+    "config": {
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoints": [
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "path": "/posts",
+          "headers": null,
+          "body": null,
+          "weight": 3,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "path": "/posts/1",
+          "headers": null,
+          "body": null,
+          "weight": 2,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        },
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "path": "/posts",
+          "headers": null,
+          "body": {
+            "title": "test",
+            "body": "content",
+            "userId": 1
+          },
+          "weight": 1,
+          "timeout": 10.0,
+          "extract": [],
+          "inject": []
+        }
+      ],
+      "users": 10,
+      "spawn_rate": 2.0,
+      "duration": 30,
+      "think_time_min": 0.5,
+      "think_time_max": 2.0,
+      "history_target": "local"
+    },
+    "metrics": {
+      "status": "completed",
+      "elapsed": 36.6,
+      "total_requests": 188,
+      "total_failures": 0,
+      "rps": 7.24,
+      "avg_response_time": 61.5,
+      "p95_response_time": 230.0,
+      "user_count": 10,
+      "stats": [
+        {
+          "name": "Create Post",
+          "method": "POST",
+          "num_requests": 32,
+          "num_failures": 0,
+          "avg_response_time": 266.6882394686638,
+          "min_response_time": 216.04962499986868,
+          "max_response_time": 753.9975420004339,
+          "p50": 220.0,
+          "p95": 640.0,
+          "p99": 750.0,
+          "rps": 1.2325829666952226,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "Get Post",
+          "method": "GET",
+          "num_requests": 66,
+          "num_failures": 0,
+          "avg_response_time": 17.569106136334362,
+          "min_response_time": 11.561207999875478,
+          "max_response_time": 52.068250000047556,
+          "p50": 16.0,
+          "p95": 37.0,
+          "p99": 52.0,
+          "rps": 2.542202368808897,
+          "failure_rate": 0.0
+        },
+        {
+          "name": "List Posts",
+          "method": "GET",
+          "num_requests": 90,
+          "num_failures": 0,
+          "avg_response_time": 20.663857833268494,
+          "min_response_time": 12.569708000228275,
+          "max_response_time": 55.888832999698934,
+          "p50": 19.0,
+          "p95": 45.0,
+          "p99": 56.0,
+          "rps": 3.4666395938303136,
+          "failure_rate": 0.0
+        }
+      ],
+      "errors": []
+    },
+    "timeseries": [
+      {
+        "rps": 0.0,
+        "avg_rt": 0.0,
+        "p95_rt": 0.0,
+        "p99_rt": 0.0,
+        "total_req": 0,
+        "failures": 0,
+        "users": 10,
+        "t": 10.0
+      },
+      {
+        "rps": 3.75,
+        "avg_rt": 141.2,
+        "p95_rt": 750.0,
+        "p99_rt": 750.0,
+        "total_req": 7,
+        "failures": 0,
+        "users": 10,
+        "t": 12.0
+      },
+      {
+        "rps": 5.23,
+        "avg_rt": 108.1,
+        "p95_rt": 750.0,
+        "p99_rt": 750.0,
+        "total_req": 20,
+        "failures": 0,
+        "users": 10,
+        "t": 14.0
+      },
+      {
+        "rps": 6.39,
+        "avg_rt": 101.0,
+        "p95_rt": 640.0,
+        "p99_rt": 750.0,
+        "total_req": 37,
+        "failures": 0,
+        "users": 10,
+        "t": 16.0
+      },
+      {
+        "rps": 6.46,
+        "avg_rt": 86.0,
+        "p95_rt": 630.0,
+        "p99_rt": 750.0,
+        "total_req": 51,
+        "failures": 0,
+        "users": 10,
+        "t": 18.0
+      },
+      {
+        "rps": 6.54,
+        "avg_rt": 87.2,
+        "p95_rt": 250.0,
+        "p99_rt": 750.0,
+        "total_req": 65,
+        "failures": 0,
+        "users": 10,
+        "t": 20.0
+      },
+      {
+        "rps": 6.85,
+        "avg_rt": 76.1,
+        "p95_rt": 250.0,
+        "p99_rt": 750.0,
+        "total_req": 81,
+        "failures": 0,
+        "users": 10,
+        "t": 22.0
+      },
+      {
+        "rps": 7.01,
+        "avg_rt": 72.1,
+        "p95_rt": 250.0,
+        "p99_rt": 750.0,
+        "total_req": 98,
+        "failures": 0,
+        "users": 10,
+        "t": 24.0
+      },
+      {
+        "rps": 7.21,
+        "avg_rt": 65.7,
+        "p95_rt": 230.0,
+        "p99_rt": 640.0,
+        "total_req": 115,
+        "failures": 0,
+        "users": 10,
+        "t": 26.0
+      },
+      {
+        "rps": 7.15,
+        "avg_rt": 65.3,
+        "p95_rt": 230.0,
+        "p99_rt": 640.0,
+        "total_req": 129,
+        "failures": 0,
+        "users": 10,
+        "t": 28.0
+      },
+      {
+        "rps": 7.24,
+        "avg_rt": 62.3,
+        "p95_rt": 230.0,
+        "p99_rt": 640.0,
+        "total_req": 143,
+        "failures": 0,
+        "users": 10,
+        "t": 30.0
+      },
+      {
+        "rps": 7.09,
+        "avg_rt": 63.9,
+        "p95_rt": 230.0,
+        "p99_rt": 640.0,
+        "total_req": 156,
+        "failures": 0,
+        "users": 10,
+        "t": 32.0
+      },
+      {
+        "rps": 7.24,
+        "avg_rt": 60.2,
+        "p95_rt": 230.0,
+        "p99_rt": 640.0,
+        "total_req": 174,
+        "failures": 0,
+        "users": 10,
+        "t": 34.0
+      },
+      {
+        "rps": 7.24,
+        "avg_rt": 61.5,
+        "p95_rt": 230.0,
+        "p99_rt": 640.0,
+        "total_req": 188,
+        "failures": 0,
+        "users": 10,
+        "t": 36.0
+      },
+      {
+        "rps": 7.24,
+        "avg_rt": 61.5,
+        "p95_rt": 230.0,
+        "p99_rt": 640.0,
+        "total_req": 188,
+        "failures": 0,
+        "users": 10,
+        "t": 36.4
+      }
+    ],
+    "script": "# Auto-generated Locust script\n# Generated by LocustForge API Testing Tool\n\nfrom locust import HttpUser, task, between\nimport json\n\n\nclass LoadTestUser(HttpUser):\n    host = \"https://jsonplaceholder.typicode.com\"\n    wait_time = between(0.5, 2.0)\n\n    @task(3)\n    def list_posts(self):\n        _headers = {}\n        with self.client.get(\"/posts\", name=\"List Posts\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(2)\n    def get_post(self):\n        _headers = {}\n        with self.client.get(\"/posts/1\", name=\"Get Post\", headers=_headers, timeout=10.0) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n\n    @task(1)\n    def create_post(self):\n        _headers = {}\n        _body = {\"title\": \"test\", \"body\": \"content\", \"userId\": 1}\n        with self.client.post(\"/posts\", name=\"Create Post\", headers=_headers, timeout=10.0, json=_body) as resp:\n            if resp.status_code >= 400:\n                try:\n                    _body_preview = resp.text[:2000]\n                except Exception:\n                    _body_preview = ''\n                _fail_msg = f\"Got status {resp.status_code}: {_body_preview}\" if _body_preview else f\"Got status {resp.status_code}\"\n                resp.failure(_fail_msg)\n\n",
+    "storage": "local"
+  },
+  {
     "run_id": "8da9562e",
     "ts": 1788320023.9304438,
     "label": "https://jsonplaceholder.typicode.com [Auth_Login, Auth_Refresh, GET_User +5]",

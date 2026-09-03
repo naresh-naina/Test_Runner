@@ -9,12 +9,11 @@ module makes no network calls of its own). Two responsibilities, combined:
      rate, a failure-count increase, an rps drop or p95 spike vs. a rolling
      baseline) — plus a heartbeat fallback so the feed is never silent even
      when nothing looks wrong.
-  2. classify_snapshot(): the actual LLM call — a single-turn, narrow Claude
-     Agent SDK query classifying the moment as OK or CONCERNING.
+  2. classify_snapshot(): the actual LLM call — a single-turn, narrow Google
+     ADK query classifying the moment as OK or CONCERNING.
 
-No MCP / tools here — Agent 1 is a plain single-turn classifier
-(tools=[], allowed_tools=[]). Tool-calling (MCP) shows up downstream, in the
-Orchestrator — see agents_orchestrator.py.
+No tools here — Agent 1 is a plain single-turn classifier. Tool-calling is
+limited to the downstream Orchestrator — see agents_orchestrator.py.
 """
 
 import json
@@ -22,13 +21,12 @@ import logging
 import time
 from typing import Optional
 
-from claude_agent_sdk import ClaudeAgentOptions, ResultMessage, query
-
+from adk_runtime import run_agent
 from agents_common import log_jsonl, strip_json_fences
 
 logger = logging.getLogger("agents.monitor_agent")
 
-MONITOR_MODEL = "claude-haiku-4-5"
+MONITOR_MODEL = "gemini-3.6-flash"
 
 # How often the LLM call fires: at least every HEARTBEAT_SECONDS (so the feed
 # isn't silent), or sooner — down to MIN_GATE_INTERVAL — when the gate below trips.
@@ -163,23 +161,13 @@ async def classify_snapshot(state: MonitorAgentState, metrics: dict) -> dict:
         "baseline_p95": round(state.baseline_p95, 2) if state.baseline_p95 else None,
     }
 
-    # No MCP / tools for Agent 1 — a plain single-turn classification query.
-    options = ClaudeAgentOptions(
-        model=MONITOR_MODEL,
-        system_prompt=SYSTEM_PROMPT,
-        permission_mode="dontAsk",
-        tools=[],
-        allowed_tools=[],
-        max_turns=1,
-    )
-
-    result_text = ""
     try:
-        async for message in query(prompt=json.dumps(payload), options=options):
-            if isinstance(message, ResultMessage):
-                result_text = message.result or ""
+        result_text = await run_agent(
+            name="monitor_classifier", model=MONITOR_MODEL,
+            instruction=SYSTEM_PROMPT, prompt=json.dumps(payload),
+        )
     except Exception as e:
-        logger.error(f"Claude Agent SDK call failed: {e}")
+        logger.error(f"Google ADK monitor call failed: {e}")
         verdict = {"status": "ERROR", "reason": f"agent call failed: {e}"}
         log_jsonl("monitor", {"input": payload, "output": verdict})
         return verdict

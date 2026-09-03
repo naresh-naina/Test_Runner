@@ -14,23 +14,20 @@ Only used in "final" mode. Mid-run interim checks (agents_orchestrator.py,
 is_final=False) skip Decisioning entirely — there is nothing for a decision
 to gate mid-run, since submit_incident isn't even a registered tool there.
 
-### MCP ###
-Wrapped as an in-process MCP tool ("decide_escalation") the same way as
-agents_analysis.py's tool — see the docstring on build_analyze_failures_tool()
-there for how create_sdk_mcp_server() wires it into the Orchestrator's
-session in agents_orchestrator.py.
+### Google ADK tool ###
+Registered as a native function tool ("decide_escalation") in the
+Orchestrator agent, the same way as Analysis.
 """
 
 import json
 import logging
 
-from claude_agent_sdk import ClaudeAgentOptions, ResultMessage, query, tool
-
+from adk_runtime import run_agent
 from agents_common import log_jsonl, strip_json_fences
 
 logger = logging.getLogger("agents.decisioning")
 
-DECISION_MODEL = "claude-sonnet-5"
+DECISION_MODEL = "gemini-3.1-pro-preview"
 
 DECISION_SYSTEM_PROMPT = """You are the decisioning agent for a load-testing pipeline. You are
 given a categorized list of endpoints that failed during a test, produced by a separate analysis
@@ -54,19 +51,10 @@ async def run_decisioning(analysis_result: list[dict]) -> dict:
     own (tools=[]); it only judges the categorized findings it's handed."""
     payload = {"findings": analysis_result}
 
-    options = ClaudeAgentOptions(
-        model=DECISION_MODEL,
-        system_prompt=DECISION_SYSTEM_PROMPT,
-        permission_mode="dontAsk",
-        tools=[],
-        allowed_tools=[],
-        max_turns=1,
+    result_text = await run_agent(
+        name="escalation_decision", model=DECISION_MODEL,
+        instruction=DECISION_SYSTEM_PROMPT, prompt=json.dumps(payload),
     )
-
-    result_text = ""
-    async for message in query(prompt=json.dumps(payload), options=options):
-        if isinstance(message, ResultMessage):
-            result_text = message.result or ""
 
     cleaned = strip_json_fences(result_text)
     data = json.loads(cleaned)
@@ -77,38 +65,21 @@ async def run_decisioning(analysis_result: list[dict]) -> dict:
 
 
 def build_decide_escalation_tool(state):
-    """### MCP TOOL DECLARATION ### — see agents_analysis.py's
-    build_analyze_failures_tool() for the general mechanism. Requires
-    analyze_failures to have already run this session (reads
-    state.analysis_result) — refuses otherwise, the same enforcement pattern
-    used by submit_incident.
-    """
+    """Return the native ADK decision tool for this orchestrator run."""
 
-    @tool(
-        "decide_escalation",
-        "Given the most recent analyze_failures result, decide whether this test's failures "
-        "warrant filing an incident ('escalate') or not ('pass'). Call this after "
-        "analyze_failures and before submit_incident.",
-        {},
-    )
-    async def decide_escalation_tool(args):
+    async def decide_escalation() -> dict:
+        """Decide whether analyzed failures merit an incident; call after analysis."""
         if state.analysis_result is None:
-            return {
-                "content": [{
-                    "type": "text",
-                    "text": "ERROR: analyze_failures has not been called yet this run — call it first.",
-                }],
-                "is_error": True,
-            }
+            return {"error": "analyze_failures has not been called yet this run"}
         await state.on_step("decisioning", "active", {"note": "Deciding whether to escalate..."})
         try:
             result = await run_decisioning(state.analysis_result)
         except Exception as e:
             logger.error(f"decide_escalation failed: {e}")
             await state.on_step("decisioning", "error", {"error": str(e)})
-            return {"content": [{"type": "text", "text": f"Decisioning failed: {e}"}], "is_error": True}
+            return {"error": f"Decisioning failed: {e}"}
         state.decision_result = result
         await state.on_step("decisioning", "done", {"result": result})
-        return {"content": [{"type": "text", "text": json.dumps(result)}]}
+        return result
 
-    return decide_escalation_tool
+    return decide_escalation

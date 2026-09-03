@@ -12,7 +12,7 @@ Monitor, declared in agents_monitor.py) and wires it to everything else:
 
 See agents_monitor.py / agents_orchestrator.py / agents_analysis.py /
 agents_incident.py for what each agent actually does, and their docstrings
-for where MCP (in-process tool-calling) is declared and used.
+for where Google ADK function tools are declared and used.
 
 Run:
     python agents/monitor.py

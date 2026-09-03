@@ -5,8 +5,8 @@ cooperating agents, **one file per agent** so each is independently readable:
 
 | File | Agent | What it is |
 |---|---|---|
-| `agents_monitor.py` | 1. Monitor | Rule-based gate + a narrow Claude Agent SDK query, classifying each judged moment as `OK`/`CONCERNING`, live, throughout the test. No MCP/tools. |
-| `agents_orchestrator.py` | Orchestrator (routing only) | Pure control flow — decides *which* agent to invoke and in what order. Runs in two modes: **final** (always fires once when a test ends, pass or fail — the only mode that can reach Decisioning/Incident) and **mid-run** (investigate-only, throttled, triggered whenever Monitor flags a live snapshot CONCERNING — structurally cannot reach Decisioning or file an incident, since neither tool is even registered in this mode). **This is where the MCP server is created** — see "MCP usage" below. Deliberately does **not** judge whether something is escalation-worthy — that's Decisioning's job. |
+| `agents_monitor.py` | 1. Monitor | Rule-based gate + a narrow Google ADK/Gemini query, classifying each judged moment as `OK`/`CONCERNING`, live, throughout the test. No tools. |
+| `agents_orchestrator.py` | Orchestrator (routing only) | Pure control flow — decides *which* agent to invoke and in what order. Final mode can reach Decisioning/Incident; investigate-only mid-run mode exposes only Analysis through an ADK function tool. |
 | `agents_analysis.py` | 2. Analysis | A tool the orchestrator calls, itself a nested narrow LLM query. Reads the run's real per-endpoint stats and error bodies, identifies which APIs failed and the likely cause, and **categorizes each as `business_logic` / `system_fault` / `unclear`** (see "Business logic vs. genuine faults" below) — without inventing details it can't see in the data. |
 | `agents_decisioning.py` | 3. Decisioning | A tool the orchestrator calls (final mode only), itself a nested narrow LLM query. Takes Analysis's categorized findings and makes the one substantive judgment in the whole pipeline: `escalate` (file an incident) or `pass` (the system behaved as designed). Separated from the Orchestrator specifically so routing and judgment are two distinct, independently-narrow calls rather than one session doing both — see its module docstring. |
 | `agents_incident.py` | 4. Incident submission | A tool the orchestrator calls (only after Decisioning says `escalate`), plain deterministic HTTP (no LLM) — `POST`s the analysis to the downstream incident API and verifies it round-trips via `GET`. Refuses to run if Analysis hasn't produced a result yet, and filters out (or refuses entirely on an all-`business_logic` result) any endpoint categorized as an expected business response — both enforced in code, independent of what Decisioning said. |
@@ -22,42 +22,17 @@ routes to Analysis → Analysis categorizes findings → Orchestrator routes to
 Decisioning → Decisioning judges escalate/pass → Orchestrator routes to
 Incident submission only if Decisioning said escalate.
 
-## MCP usage — where and why
+## Google ADK usage — where and why
 
-This pipeline uses `claude_agent_sdk`'s **in-process MCP** mechanism
-(`@tool` decorator + `create_sdk_mcp_server()`) so the Orchestrator can call
-Analysis, Decisioning, and Incident-submission as real, structured tool calls
-instead of just reasoning about them in free text. Every place MCP is
-declared or used is marked with a `### MCP ###` comment in the source:
+The pipeline uses Google ADK `Agent`, `Runner`, and `InMemorySessionService`.
+`adk_runtime.py` creates one isolated session per narrow LLM call. The
+Orchestrator receives native async Python function tools for Analysis,
+Decisioning, and Incident submission; their docstrings provide the tool
+descriptions and their return dictionaries remain structured.
 
-- **Tool declarations** — `agents_analysis.py`'s `build_analyze_failures_tool()`,
-  `agents_decisioning.py`'s `build_decide_escalation_tool()`, and
-  `agents_incident.py`'s `build_submit_incident_tool()` each wrap a function
-  with `@tool(name, description, input_schema)`, turning it into an `SdkMcpTool`.
-- **Server assembly** — `agents_orchestrator.py`'s `run_orchestrator_for_test()`
-  collects the applicable tools for the mode and calls
-  `create_sdk_mcp_server(name="incident_pipeline", tools=[...])`. This runs
-  **in-process** (no subprocess, no network hop) — it's not a real external
-  MCP server, just the SDK's mechanism for exposing Python functions as tools
-  to the model.
-- **Server registration + permission grant** — also in `run_orchestrator_for_test()`,
-  on the `ClaudeAgentOptions`: `mcp_servers={"incident_pipeline": server}` plus
-  `allowed_tools=[...]` (final mode: `analyze_failures`, `decide_escalation`,
-  `submit_incident`; mid-run mode: `analyze_failures` only).
-
-**Gotcha, found by live testing, not obvious from the SDK's own docstring
-example:** `allowed_tools` entries for an in-process SDK MCP server must use
-the `mcp__<server_name>__<tool_name>` form. A bare tool name (`"analyze_failures"`,
-which is literally what the SDK's own example shows) is silently denied under
-`permission_mode="dontAsk"` — the orchestrator doesn't error, it just reports
-back that it can't proceed. This is called out at the top of
-`agents_orchestrator.py`.
-
-Agent 1 (Monitor), the Analysis subagent's nested LLM call, and the
-Decisioning subagent's nested LLM call all run with `tools=[]` /
-`allowed_tools=[]` — no MCP involved there at all, they're plain single-turn
-classification/reasoning queries. Only the Orchestrator's own session has an
-MCP server wired in.
+The tool list is deliberately rebuilt per invocation. Mid-run receives only
+`analyze_failures`; final mode additionally receives `decide_escalation` and
+`submit_incident`. That makes filing structurally impossible mid-run.
 
 ## Business logic vs. genuine faults
 
@@ -100,26 +75,20 @@ description in that case).
 
 ## Why a separate virtualenv
 
-`claude-agent-sdk` depends on `mcp`, which pulls in a newer `starlette`/`anyio`
-than the main app's pinned `fastapi==0.115.12` tolerates. Installing it into the
-same environment as the main app **will** break `main.py` (this happened once
-while building this — recovered by reverting the shared env). `agents/.venv` is
-a dedicated virtualenv so this can never collide with the main app's deps again.
-Do not `pip install claude-agent-sdk` into the main project's environment.
+`google-adk` has its own FastAPI and Google Cloud dependency tree. Keep it in
+`agents/.venv` so it cannot alter the main application's pinned dependencies.
 
 ## Prerequisites
 
-1. **Claude Code authentication.** The Python SDK shells out to a `claude` CLI
-   binary — it does not talk to the API directly and does not need
-   `ANTHROPIC_API_KEY`. `pip install claude-agent-sdk` bundles its own
-   `claude.exe` (`agents/.venv/Lib/site-packages/claude_agent_sdk/_bundled/`),
-   so a separate CLI install usually isn't necessary. If it can't find a working
-   login, it falls back to a system-wide `claude` on PATH — install one
-   (`npm install -g @anthropic-ai/claude-code`) and run `claude login` in that
-   case. Either way it uses your normal Claude Code / Claude subscription
-   session, not a raw API key.
+1. **Python 3.10 or newer.** Google ADK's current dependency stack no longer
+   supports Python 3.9.
 
-2. **The main app running** (`python main.py`, or `uvicorn main:app`) on its
+2. **Google ADK authentication.** Set `GOOGLE_API_KEY` (or `GEMINI_API_KEY`)
+   for the Gemini API. Alternatively configure Vertex AI application-default
+   credentials and the usual `GOOGLE_GENAI_USE_VERTEXAI`, project, and location
+   environment variables. The application does not read or log credentials.
+
+3. **The main app running** (`python main.py`, or `uvicorn main:app`) on its
    usual port, so `/ws/metrics` is reachable.
 
 ## Setup (one time)
@@ -152,7 +121,7 @@ in a browser to watch verdicts stream in live. Verdicts also print to stdout.
 ## How the call-throttling works
 
 Every snapshot from `/ws/metrics` updates the dashboard's raw metrics tiles for
-free (no LLM cost). A Claude call only fires when either:
+free (no LLM cost). A Gemini call only fires when either:
 
 - the local rule-based gate trips (endpoint failure rate > 5%, failures
   increased since the last snapshot, rps dropped >40% below the recent
@@ -164,8 +133,7 @@ Tune thresholds and intervals at the top of `agents_monitor.py`.
 
 The Orchestrator has its own, separate throttle for mid-run checks:
 `MIN_MIDRUN_INTERVAL_SECONDS` (default 60s) in `agents_orchestrator.py` — a
-mid-run check is a real multi-turn Sonnet + Haiku round trip (Orchestrator +
-Analysis), noticeably more expensive than Monitor's own single Haiku call, so
+mid-run check is a multi-step Gemini round trip (Orchestrator + Analysis), so
 it's throttled harder and only triggers on an actual CONCERNING verdict, never
 on a heartbeat.
 
